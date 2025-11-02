@@ -1,0 +1,286 @@
+//
+//  Localizable.strings
+//  FinalSwiftUI
+//
+//  Created by Mohab Elsayed on 27/12/2024.
+//
+
+
+//Global Keys
+"R.S"                                                                                 = "R.S"                           ;
+"Adding"                                                                              = "Adding"                        ;
+"YES"                                                                                 = "YES"                           ;
+"NO"                                                                                  = "NO"                            ;
+"Hour"                                                                                = "Hour"                          ;
+"Day"                                                                                 = "Day"                           ;
+"Total"                                                                               = "Total"                         ;
+"Next"                                                                                = "Next"                          ;
+"Confirm"                                                                             = "Confirm"                       ;
+"Cancel"                                                                              = "Cancel"                        ;
+"Language"                                                                            = "Language"                      ;
+"Save"                                                                                = "Save"                          ;
+"Add"                                                                                 = "Add"                           ;
+"Warning"                                                                             = "Warning"                       ;
+"please login first"                                                                  = "please login first"            ;
+"Ok"                                                                                  = "Ok"                            ;
+
+
+/* ============================= */
+/* Onboarding Screen */
+/* ============================= */
+"onboarding_skip"         = "Skip";
+"onboarding_text_1"       = "This is a placeholder text that can be replaced...";
+"onboarding_next"         = "Next";
+"onboarding_previous"     = "Previous";
+
+/* ============================= */
+/* Language Selection Screen */
+/* ============================= */
+"language_title"          = "Select Language";
+"language_en"             = "English";
+"language_ar"             = "Arabic";
+"save_button"             = "Save";
+
+
+/* ============================= */
+/* Login Screen */
+/* ============================= */
+"login_title"             = "Login";
+"phone_placeholder"       = "";
+"password_placeholder"    = "Password";
+"forgot_password"         = "Forgot your password?";
+"login_button"            = "Login";
+"register_button"         = "Create New Account";
+"guest_button"            = "Skip and Enter as Guest";
+
+/* ============================= */
+/* Phone Verification Screen     */
+/* شاشة التحقق من رقم الهاتف     */
+/* ============================= */
+
+"confirm_phone_number" = "Confirm your phone number";
+"verification_sent_to_number" = "We have sent you a verification code to the number";
+"resend_code_in" = "Resend code in";
+"confirm_button" = "Confirm";
+"Resen_Code" = "Resend Code";
+
+/* ============================= */
+/* Enter Mobile Number Screen   */
+/* شاشة إدخال رقم الجوال         */
+/* ============================= */
+
+"enter_mobile_number" = "Enter mobile number";
+"confirm_button" = "Confirm";
+
+
+
+
+/* ============================= */
+/* Registration Screen */
+/* ============================= */
+"register_title"          = "Create Account";
+"full_name"               = "Full Name";
+"phone_number"            = "Phone Number";
+"email"                   = "Email";
+"password"                = "Password";
+"confirm_password"        = "Confirm Password";
+"city"                    = "City";
+"area"                    = "Area";
+"id_number"               = "ID Number";
+"bank_account_number"     = "Bank Account Number";
+"agree_terms"             = "Agree to Terms and Conditions";
+"register_submit_button"  = "Register Account";
+
+/* ============================= */
+/* VerificationCode */
+/* ============================= */
+
+"confirm_phone_number" = "Confirm your phone number";
+"verification_sent_to_number" = "We have sent you a verification code to the number";
+"resend_code_in" = "Resend code in";
+"confirm_button" = "Confirm";
+
+
+/* ============================= */
+/* Side Menu */
+/* ============================= */
+"menu"                    = "Menu";
+"menu_messages"           = "Messages";
+"menu_settings"           = "Settings";
+"menu_faq"                = "FAQ";
+"menu_about_us"           = "About Us";
+"menu_privacy"            = "Privacy Policy";
+"menu_terms"              = "Terms & Conditions";
+"menu_cancellation"       = "Cancellation Policy";
+"menu_contact"            = "Contact Us";
+"menu_share"              = "Share App";
+"menu_rate"               = "Rate App";
+"menu_logout"             = "Logout";
+"menu_delete_account"     = "Delete Account";
+"menu_app_version"        = "App Version";
+"menu_filter"             = "Menu Filter";
+
+/* ============================= */
+/* Ad Pending Screen */
+/* ============================= */
+"ad_pending_text"         = "The ad will be posted within the next few hours and you will be notified once the auction starts";
+"contact_support"         = "Contact Support";
+"home"                    = "Home";
+"my_ads"                  = "My Ads";
+
+/* ============================= */
+/* Ad Type Selection Screen */
+/* ============================= */
+"choose_ad_type"          = "Choose Ad Type";
+"car_auction"             = "Car Auction";
+"other_sections"          = "Other Sections";
+
+/* ============================= */
+/* Cancellation Policy Support */
+/* ============================= */
+"cancellation_policy"     = "Cancellation Policy";
+"message_type"            = "Message Type";
+"complaint"               = "Complaint";
+"suggestion"              = "Suggestion";
+"message_subject"         = "Message Subject";
+"message_body"            = "Message Body";
+"send"                    = "Send";
+
+/* ============================= */
+/* Settings Screen */
+/* ============================= */
+"settings"                = "Settings";
+"notifications"           = "Notifications";
+"enable"                  = "Enable";
+"disable"                 = "Disable";
+"language"                = "Language";
+"arabic"                  = "Arabic";
+"english"                 = "English";
+
+
+
+/* ============================= */
+/* Contact Us Screen */
+/* ============================= */
+"Message_Type"                = "Message Type";
+"Message_Text"                = "Message Text"; 
+"Message_Title"               = "Message Title";
+"Message_body"               = "Message body";
+
+/* ============================= */
+/* Notification Screen */
+/* ============================= */
+"read_all_notifications" = "Read All Notifications";
+
+
+//moaaz's localizationssssss
+"city" = "City";
+"category" = "Category";
+"brand" = "Brand";
+"papers_state" = "Papers State";
+"color" = "Color";
+"auction_name" = "Auction Name";
+"car_description" = "Car Description";
+"start_date" = "Start Date";
+"end_date" = "End Date";
+"car_state" = "Car State";
+"model" = "Model";
+"manufacture_year" = "Manufacture Year";
+"accidents" = "Accidents";
+"ex_owners" = "Ex Owners";
+"license_state" = "License State";
+"delay_years" = "Delay Years";
+"kilometres" = "Kilometres";
+"engine_size" = "Engine Size";
+"fuel_type" = "Fuel Type";
+"transmission" = "Transmission";
+"starting_price" = "Starting Price";
+"accept_terms" = "Accept terms and conditions";
+"cancel" = "Cancel";
+"add" = "Add";
+"add_photo" = "Add Photo";
+"add_ad" = "Add Ad";
+"product_name" = "Product Name";
+"product_description" = "Product Description";
+"contact_number" = "Contact Number";
+"email" = "Email";
+"car_auctions" = "Car Auctions";
+"search" = "Search";
+"publish_date" = "Publish Date";
+"start_day_and_date" = "Start Day and Date";
+"end_day_and_date" = "End Day and Date";
+"manufacture_date" = "Manufacture Date";
+"price_value" = "Price: 6168181";
+"address" = "Address";
+"choose_ad_type" = "Choose Ad Type";
+"your_ad_will_be_published_soon" = "Your ad will be published soon";
+"you_will_be_notified_soon" = "You will be notified soon";
+"contact_support" = "Contact Support";
+"my_ads" = "My Ads";
+"home" = "Home";
+"contact_us" = "Contact Us";
+"electronics" = "Electronics";
+"search" = "Search";
+"favourites" = "Favourites";
+"filter" = "Filter";
+"from" = "From";
+"to" = "To";
+"save" = "Save";
+"reset" = "Reset";
+"enter_price" = "Enter Price";
+"my_ads" = "My Ads";
+"ads" = "Ads";
+"vendor" = "Vendor";
+"subscribed_auctions" = "Subscribed Auctions";
+"id" = "ID";
+"ad_type" = "Ad Type";
+"full_price" = "Full Price";
+"ad_state" = "Ad State";
+"add_balance" = "Add Balance";
+"cash" = "Cash";
+"addition" = "Addition";
+"usage" = "Usage";
+"reference_number" = "Reference Number";
+"operation_type" = "Operation Type";
+"charge_method" = "Charge Method";
+"money_amount" = "Money Amount";
+"wallet" = "Wallet";
+"orders" = "Orders";
+"accept_terms_and_conditions" = "Accept Terms And Conditions";
+"price" = "Price";
+"details" = "Details";
+"car_details" = "Car Details";
+"subscribe" = "Subscribe";
+"remaining_time" = "Remaining Time";
+"charge_wallet" = "Charge Wallet";
+"enter_charge_value" = "Enter Charge Value";
+"choose_payment_method" = "Choose Payment Method";
+"visa" = "Visa";
+"master_card" = "Master Card";
+"old_first" = "Old First";
+"new_first" = "New First";
+"lowest_price_first" = "Lowest Price First";
+"lowest_price_first" = "Highest Price First";
+"show_contact_info" = "Show Contact Info";
+"enter_phone_number" = "Enter Phone Number";
+"enter_new_password" = "Enter New Password";
+"new_password" = "New Password";
+"confirm_password" = "Confirm Password";
+"name_required" = "Name Required";
+"phone_number_required" = "Phone Number Required";
+"email_required" = "Email Required";
+"id_required" = "ID Required";
+"bank_required" = "Bank Account Required";
+"password_required" = "Password Required";
+"please_check_box" = "Please Check Box";
+"Agreeing_to_the_terms_and_conditions" = "Agree To Terms And Conditions";
+"confirm_password_required" = "Confirm Password";
+"phone_number_incorrect" = "Incorrect Phone Number";
+"change_password" = "Change Password";
+"advertisements" = "Advertisements";
+"auctions" = "Auctions";
+"ratings_menu" = "Rating Menu";
+"enter_name" = "Enter Name";
+"currnt_price" = "Current Price";
+"sr" = "SR";
+"user_name" = "User Name";

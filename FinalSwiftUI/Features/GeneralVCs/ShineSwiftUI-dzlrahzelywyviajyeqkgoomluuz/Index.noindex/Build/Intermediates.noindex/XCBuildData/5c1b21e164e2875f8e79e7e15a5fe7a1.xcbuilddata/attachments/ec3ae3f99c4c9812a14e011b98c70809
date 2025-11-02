@@ -1,0 +1,21 @@
+{
+  "" : {
+    "dependencies" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/IQKeyboardReturnManager.build/Objects-normal/arm64/IQKeyboardReturnManager-master.d",
+    "diagnostics" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/IQKeyboardReturnManager.build/Objects-normal/arm64/IQKeyboardReturnManager-master.dia",
+    "emit-module-dependencies" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/IQKeyboardReturnManager.build/Objects-normal/arm64/IQKeyboardReturnManager-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/IQKeyboardReturnManager.build/Objects-normal/arm64/IQKeyboardReturnManager-master-emit-module.dia",
+    "swift-dependencies" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphoneos/IQKeyboardReturnManager.build/Objects-normal/arm64/IQKeyboardReturnManager-master.swiftdeps"
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/Delegates/IQKeyboardReturnManager+UITextFieldDelegate.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/Delegates/IQKeyboardReturnManager+UITextViewDelegate.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/IQKeyboardReturnManager.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardReturnManager/IQKeyboardReturnManager/Classes/IQTextInputViewInfoModel.swift" : {
+
+  }
+}

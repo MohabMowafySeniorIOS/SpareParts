@@ -1,0 +1,6 @@
+framework module Pods_FinalSwiftUI {
+  umbrella header "Pods-FinalSwiftUI-umbrella.h"
+
+  export *
+  module * { export * }
+}

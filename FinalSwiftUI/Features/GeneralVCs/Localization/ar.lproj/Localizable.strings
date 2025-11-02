@@ -1,0 +1,300 @@
+//
+//  Localizable.strings
+//  FinalSwiftUI
+//
+//  Created by Mohab Elsayed on 27/12/2024.
+//
+
+
+// Alerts VC
+"Something went wrong! 🔧"                                  = "حدث خطأ ما !🔧" ;
+
+//Global Keys
+"R.S"                                                       = "ر.س";
+"adding"                                                    = "إضافة";
+"yES"                                                       = "نعم";
+"nO"                                                        = "لا";
+"hour"                                                      = "ساعة";
+"day"                                                       = "يوم";
+"total"                                                     = "الاجمالي";
+"next"                                                      = "التالي";
+"confirm"                                                   = "تأكيد";
+"cancel"                                                    = "الغاء";
+"language"                                                  = "اللغة";
+"save"                                                      = "حفظ";
+"add"                                                       = "إضافة";
+"warning"                                                   = "تنبيه";
+"please login first"                                        = "من فضلك سجل أولاً";
+"ok"                                                        = "حسناً";
+"seconds"                                                   = "ثواني";
+
+
+
+/* ============================= */
+/* شاشة اختيار اللغة */
+/* ============================= */
+"language_title"          = "اختيار اللغة";
+"language_en"             = "الإنجليزية";
+"language_ar"             = "العربية";
+"save_button"             = "حفظ";
+
+/* ============================= */
+/* شاشة الترحيب / Onboarding */
+/* ============================= */
+"onboarding_skip"         = "تخطي";
+"onboarding_text_1"       = "هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة...";
+"onboarding_next"         = "التالي";
+"onboarding_previous"     = "السابق";
+
+/* ============================= */
+/* شاشة تسجيل الدخول */
+/* ============================= */
+"login_title"             = "تسجيل الدخول";
+"phone_placeholder"       = "";
+"password_placeholder"    = "كلمة المرور";
+"forgot_password"         = "نسيت كلمة المرور؟";
+"login_button"            = "تسجيل الدخول";
+"register_button"         = "تسجيل حساب جديد";
+"guest_button"            = "التخطي والدخول كزائر";
+
+/* ============================= */
+/* شاشة التحقق من رقم الهاتف     */
+/* Phone Verification Screen     */
+/* ============================= */
+
+"confirm_phone_number" = "قم بتأكيد رقم هاتفك";
+"verification_sent_to_number" = "لقد أرسلنا لك رمز التحقق على الرقم";
+"resend_code_in" = "إعادة إرسال الكود خلال";
+"confirm_button" = "تأكيد";
+"Resen_Code" = "اعادة ارسال الكود";
+
+/* ============================= */
+/* شاشة إدخال رقم الجوال         */
+/* Enter Mobile Number Screen   */
+/* ============================= */
+
+"enter_mobile_number" = "دخل رقم الجوال";
+"confirm_button" = "تأكيد";
+
+
+
+/* ============================= */
+/* شاشة تسجيل حساب جديد */
+/* ============================= */
+"register_title"          = "تسجيل حساب جديد";
+"full_name"               = "الاسم";
+"phone_number"            = "رقم الجوال";
+"email"                   = "البريد الإلكتروني";
+"password"                = "كلمة المرور";
+"confirm_password"        = "تأكيد كلمة المرور";
+"city"                    = "المدينة";
+"area"                    = "المنطقة";
+"id_number"               = "رقم الهوية";
+"bank_account_number"     = "رقم الحساب البنكي";
+"agree_terms"             = "الموافقة على الشروط والأحكام";
+"register_submit_button"  = "تسجيل الحساب";
+
+/* ============================= */
+/* القائمة الجانبية (Side Menu) */
+/* ============================= */
+"menu"                    = "القائمة";
+"menu_messages"           = "الرسائل";
+"menu_settings"           = "الإعدادات";
+"menu_faq"                = "الأسئلة الشائعة";
+"menu_about_us"           = "من نحن";
+"menu_privacy"            = "سياسة الخصوصية";
+"menu_terms"              = "الشروط والأحكام";
+"menu_cancellation"       = "سياسة الإلغاء";
+"menu_contact"            = "اتصل بنا";
+"menu_share"              = "مشاركة التطبيق";
+"menu_rate"               = "تقييم التطبيق";
+"menu_logout"             = "تسجيل الخروج";
+"menu_delete_account"     = "حذف الحساب";
+"menu_app_version"        = "إصدار التطبيق";
+"menu_filter"             = "فلتر القائمة";
+/* ============================= */
+/* شاشة انتظار الإعلان */
+/* ============================= */
+"ad_pending_text"         = "سيتم طرح الإعلان خلال الساعات المقبلة و إشعاركم حال بدء المزاد";
+"contact_support"         = "تواصل مع الدعم";
+"home"                    = "الرئيسية";
+"my_ads"                  = "إعلاناتي";
+
+/* ============================= */
+/* شاشة اختيار نوع الإعلان */
+/* ============================= */
+"choose_ad_type"          = "اختر نوع الإعلان";
+"car_auction"             = "مزاد السيارات";
+"other_sections"          = "الأقسام الأخرى";
+
+/* ============================= */
+/* شاشة سياسة الإلغاء - الدعم */
+/* ============================= */
+"cancellation_policy"     = "سياسة الإلغاء";
+"message_type"            = "نوع الرسالة";
+"complaint"               = "شكوى";
+"suggestion"              = "مقترح";
+"message_subject"         = "عنوان الرسالة";
+"message_body"            = "نص الرسالة";
+"send"                    = "إرسال";
+
+/* ============================= */
+/* شاشة الإعدادات */
+/* ============================= */
+"settings"                = "الإعدادات";
+"notifications"           = "الإشعارات";
+"enable"                  = "تفعيل";
+"disable"                 = "تعطيل";
+"language"                = "اللغة";
+"arabic"                  = "عربي";
+"english"                 = "إنجليزي";
+
+
+/* ============================= */
+/* Contact Us Screen */
+/* ============================= */
+"Message_Type"                = "نوع الرسالة";
+"Message_Text"                = "نص الرسالة"; 
+"Opened"                      = "مفتوح";
+"Complaint"                   = "شكوى";
+"Message_Title"              = "عنوان الرسالة";
+"Message_body"               = "نص الرسالة";
+
+
+/* ============================= */
+/* Notification Screen */
+/* ============================= */
+"Notifications"          = "الاشعارات";
+"read_all_notifications" = "قراءة جميع الإشعارات";
+
+/* ============================= */
+/* Settings Screen */
+/* ============================= */
+"Settings" = "الاعدادات";
+"Enabled" = "تفعيل";
+"Disable" = "تعطيل";
+"Language" = "اللغة";
+"Arabic" = "عربي";
+"English" = "إنجليزي";
+
+/* ============================= */
+/* Profile Screen */
+/* ============================= */
+
+"Profile" = "الحساب الشخصي";
+
+//moaaz's localizationssssss
+"city" = "المدينة";
+"category" = "الفئة";
+"brand" = "العلامة التجارية";
+"papers_state" = "حالة الأوراق";
+"color" = "اللون";
+"auction_name" = "اسم المزاد";
+"car_description" = "وصف السيارة";
+"start_date" = "تاريخ البدء";
+"end_date" = "تاريخ الانتهاء";
+"car_state" = "حالة السيارة";
+"model" = "الموديل";
+"manufacture_year" = "سنة التصنيع";
+"accidents" = "الحوادث";
+"ex_owners" = "عدد الملاك السابقين";
+"license_state" = "حالة الرخصة";
+"delay_years" = "سنوات التأخير";
+"kilometres" = "عدد الكيلومترات";
+"engine_size" = "حجم المحرك";
+"fuel_type" = "نوع الوقود";
+"transmission" = "ناقل الحركة";
+"starting_price" = "السعر الابتدائي";
+"accept_terms" = "أوافق على الشروط والأحكام";
+"cancel" = "إلغاء";
+"add" = "إضافة";
+"add_photo" = "إضافة صورة";
+"add_ad" = "إضافة إعلان";
+"product_name" = "اسم المنتج";
+"product_description" = "وصف المنتج";
+"contact_number" = "رقم التواصل";
+"email" = "البريد الإلكتروني";
+"car_auctions" = "مزادات السيارات";
+"search" = "بحث";
+"publish_date" = "تاريخ النشر";
+"start_day_and_date" = "يوم و تاريخ البداية";
+"end_day_and_date" = "يوم و تاريخ النهاية";
+"manufacture_date" = "تاريخ التصنيع";
+"price_value" = "السعر: 6168181";
+"address" = "العنوان";
+"choose_ad_type" = "اختر نوع الإعلان";
+"your_ad_will_be_published_soon" = "سيتم نشر إعلانك قريبًا";
+"you_will_be_notified_soon" = "سيتم إشعارك قريبًا";
+"contact_support" = "تواصل مع الدعم";
+"my_ads" = "إعلاناتي";
+"home" = "الرئيسية";
+"contact_us" = "بيانات التواصل";
+"electronics" = "إلكترونيات";
+"search" = "بحث";
+"favourites" = "المفضلة";
+"filter" = "تصفية";
+"from" = "من";
+"to" = "إلى";
+"save" = "حفظ";
+"reset" = "إعادة تعيين";
+"enter_price" = "أدخل السعر";
+"my_ads" = "إعلاناتي";
+"ads" = "إعلانات";
+"vendor" = "التاجر";
+"subscribed_auctions" = "المزادات المشترك بها";
+"id" = "رقم المعرف";
+"ad_type" = "نوع الإعلان";
+"full_price" = "السعر الكامل";
+"ad_state" = "حالة الإعلان";
+"add_balance" = "إضافة رصيد";
+"cash" = "نقدًا";
+"addition" = "إضافة";
+"usage" = "استخدام";
+"reference_number" = "رقم المرجع";
+"operation_type" = "نوع العملية";
+"charge_method" = "طريقة الشحن";
+"money_amount" = "قيمة المبلغ";
+"wallet" = "المحفظة";
+"orders" = "سجل الطلبات";
+"accept_terms_and_conditions" = "الموافقة علي الشروط و الاحكام";
+"price" = "السعر";
+"details" = "التفاصيل";
+"car_details" = "تفاصيل السياره";
+"subscribe" = "اشتراك";
+"remaining_time" = "الوقت المتبقي";
+"charge_wallet" = "شحن المحفظة";
+"enter_charge_value" = "ادخل قيمة الشحن";
+"choose_payment_method" = "إختر طريقة الدفع";
+"visa" = "فيزا";
+"master_card" = "بطاقة دفع";
+"new_first" = "الاحدث اولا";
+"old_first" = "الاقدم اولا";
+"lowest_price_first" = "الاقل سعرا";
+"highest_price_first" = "الاعلي سعرا";
+"show_contact_info" = "تواصل مع البائع";
+"enter_phone_number" = "أدخل رقم الجوال";
+"enter_new_password" = "كلمة المرور الجديدة";
+"new_password" = "كلمة المرور الجديدة";
+"confirm_password" = "تأكيد كلمة المرور";
+"Log In" = "تسجيل دخول";
+"You Should Login First" = "يجب تسجيل الدخول أولاً";
+"Log In"                 = "تسجيل دخول";
+"Cancel"                 = "إلغاء";
+"name_required" = "ادخل الاسم";
+"phone_number_required" = "ادخل رقم الهاتف";
+"email_required" =" ادخل البريد الالكتروني";
+"id_required" = "ادخل رقم الهويه";
+"bank_required" = "ادخل رقم الحساب";
+"password_required" = "ادخل كلمة المرور";
+"please_check_box" = "البوكس يا اعمي";
+"Agreeing_to_the_terms_and_conditions" = "الموافقة علي الشروط والاحكام";
+"confirm_password_required" = "ادخل كلمة المرور";
+"phone_number_incorrect" = "رقم الهاتف غير صحيح";
+"change_password" = "تغيير كلمة المرور";
+"advertisements" = "الإعلانات";
+"auctions" = "المزادات";
+"ratings_menu" = "قائمة التقييمات";
+"enter_name" = "أدخل الإسم";
+"current_price" = "السعر الحالي";
+"sr" = "رس";
+"user_name" = "إسم المستخدم";

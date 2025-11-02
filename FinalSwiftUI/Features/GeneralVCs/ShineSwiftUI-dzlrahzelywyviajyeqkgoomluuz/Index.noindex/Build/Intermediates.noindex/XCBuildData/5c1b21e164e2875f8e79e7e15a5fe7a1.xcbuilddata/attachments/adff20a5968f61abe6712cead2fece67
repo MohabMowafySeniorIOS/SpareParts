@@ -1,0 +1,39 @@
+{
+  "" : {
+    "dependencies" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master.d",
+    "diagnostics" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master.dia",
+    "emit-module-dependencies" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master-emit-module.dia",
+    "swift-dependencies" : "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/FinalSwiftUI/FinalSwiftUI/Features/ShineSwiftUI-dzlrahzelywyviajyeqkgoomluuz/Index.noindex/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/IQKeyboardToolbar.build/Objects-normal/arm64/IQKeyboardToolbar-master.swiftdeps"
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQBarButtonItem.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQBarButtonItemConfiguration.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQInvocation.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQBarButtonItem/IQTitleBarButtonItem.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtension.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtensionDeprecated.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardExtension/UIView+IQKeyboardExtensionObjc.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/IQKeyboardToolbar.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Classes/Placeholder/IQKeyboardToolbarPlaceholderConfiguration.swift" : {
+
+  },
+  "/Users/mohabelsayed/Desktop/BusnissBuildings/SwiftUICode/ShineSwiftUI/Pods/IQKeyboardToolbar/IQKeyboardToolbar/Placeholderable/IQPlaceholderable.swift" : {
+
+  }
+}
