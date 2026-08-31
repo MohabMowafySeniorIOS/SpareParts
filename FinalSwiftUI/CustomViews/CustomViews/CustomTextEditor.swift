@@ -2,7 +2,7 @@
 //  CustomTextEditor.swift
 //  MyAuctions
 //
-//  Created by Moaaz on 15/06/2025.
+//  Created by Mohab on 15/06/2025.
 //
 
 
@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CustomTextEditor: UIViewRepresentable {
     @Binding var text: String
-    var backgroundColor: UIColor = .cGray3
+    var backgroundColor: UIColor = UIColor.cGray3!
     var textColor: UIColor = .label
 
     func makeUIView(context: Context) -> UITextView {

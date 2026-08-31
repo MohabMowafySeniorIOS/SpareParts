@@ -8,21 +8,38 @@
 import Foundation
 import Foundation
 import Combine
-import Alamofire
+
 import SwiftUI
 class VerificationViewModel: ObservableObject {
     @Published var errorMessage: String?
-    @Published var activateModel: UserData?
+    @Published var activateModel: LoginData?
     @Published var resendCodeData: OTPData?
     @Published var isLoading: Bool?
     
-    func VerifyAccount(urlEndPoint:EndPoints, methodType: HTTPMethod  ,parameters : BaseParameters) {
-        let url = "\(hostName)/\(urlEndPoint.rawValue)"
+   @ObservedObject var coordinator: AuthCoordinator
+    
+    init(coordinator: AuthCoordinator) {
+        _coordinator = ObservedObject(wrappedValue: coordinator)
+    }
+    
+    func ShowChangePassword(otp: String, phone: String){
+        coordinator.showChangePassword(otp: otp, phone: phone)
+    }
+    
+    func disMiss(){
+        coordinator.path.removeLast()
+    }
+    
+    func VerifyAccount(urlEndPoint:EndPoints, methodType: HTTPMethodType  ,parameters : BaseParameters) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
         isLoading = true
-        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: parameters.toDictionary()) { [weak self] (Model: BaseModel<UserData>? , err : String? )in
+        print(parameters)
+        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: parameters.toDictionary()) { [weak self] (Model: BaseModel<LoginData>? , err : String? )in
             guard let self = self else { return }
-            if Model != nil {
-                self.activateModel = Model?.data
+             if Model?.status == "success" {
+                AuthService.userData = Model?.data
+                coordinator.loginSuccess()
+                
            }else {
             self.errorMessage = err
                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -36,13 +53,35 @@ class VerificationViewModel: ObservableObject {
     }
     
     
+    func VerifyPassword(urlEndPoint:EndPoints = .password_verify, methodType: HTTPMethodType  ,parameters : BaseParameters) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
+        isLoading = true
+        print(parameters)
+        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: parameters.toDictionary()) { [weak self] (Model: BaseModel<LoginData>? , err : String? )in
+            guard let self = self else { return }
+             if Model?.status == "success" {
+                let phone = parameters.toDictionary()["auth"] as? String
+                let code = parameters.toDictionary()["code"] as? String
+                self.ShowChangePassword(otp: code ?? "", phone: phone ?? "")
+           }else {
+            self.errorMessage = err
+               DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                  withAnimation {
+                       self.errorMessage = nil
+                   }
+               }
+           }
+            self.isLoading = false
+        }
+    }
     
-    func ResendCode(urlEndPoint:EndPoints, methodType: HTTPMethod,parameters : BaseParameters) {
-        let url = "\(hostName)/\(urlEndPoint.rawValue)"
+    
+    func ResendCode(urlEndPoint:EndPoints, methodType: HTTPMethodType,parameters : BaseParameters) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
         isLoading = true
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters:parameters.toDictionary()) { [weak self] (Model: BaseModel<OTPData>? , err : String? )in
             guard let self = self else { return }
-            if Model != nil {
+             if Model?.status == "success" {
                 self.resendCodeData = Model?.data
            }else {
             self.errorMessage = err

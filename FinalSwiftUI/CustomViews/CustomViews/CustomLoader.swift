@@ -28,7 +28,7 @@ struct LoaderView: View {
     // Custom Loader
     func CustomLoader() -> some View {
         ZStack {
-            Text("Loading")
+            Text("Loading".localized)
             Circle()
                 .stroke(lineWidth: 8)
                 .opacity(0.3)

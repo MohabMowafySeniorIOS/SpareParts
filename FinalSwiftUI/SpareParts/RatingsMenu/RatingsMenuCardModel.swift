@@ -2,7 +2,7 @@
 //  RatingsMenuCardModel.swift
 //  MyAuctions
 //
-//  Created by Moaaz Ahmed on 16/07/2025.
+//  Created by Mohab Mowafy on 16/07/2025.
 //
 
 import Foundation

@@ -1,0 +1,6 @@
+framework module Pods_SpareParts {
+  umbrella header "Pods-SpareParts-umbrella.h"
+
+  export *
+  module * { export * }
+}

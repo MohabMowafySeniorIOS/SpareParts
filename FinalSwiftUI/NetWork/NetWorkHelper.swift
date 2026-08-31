@@ -29,62 +29,118 @@ public enum HTTPMethodType: String {
 public enum EndPoints: String {
     
     //MARK: AUTH
-    case register = "register"
-    case Login = "login"
-    case verify_phone = "verify-phone"
-    case resend_otp = "resend-otp"
-    case forgot_password = "forgot-password"
-    case reset_password = "reset-password"
-    case logout = "logout"
+    case register =  "client/auth/register"
+    case Login = "client/auth/login"
+    case verify_phone = "client/auth/verify"
+    case resend_otp = "client/auth/send"
+    case forgot_password = "client/password/forget"
+    case password_verify = "client/password/verify"
+    case reset_password = "client/password/reset"
+    case update_password = "client/profile/update-password"
+    case logout = "client/logout"
+    
+    //MARK: Profile
+    case updatePhone = "client/profile/send/otp"
+    case activeUpdatePhone = "client/profile/update/auth"
+    
+    //    MARK: Home
+    case home = "client/home"
+    case vendorsList = "client/traders"
+    case favorites = "client/traders/favorites/list"
+    case vendorDetails = "client/traders/"
+    case orders = "client/orders"
+    
+    //MARK: Chats
+    case chats = "client/chats"
+    case unread_count = "client/chats/unread-count"
+    
+    //MARK: Payment
+    case AvailablePaymentMethod = "client/payment-methods"
+    case Wallet = "client/wallet"
+    case WalletBalanace = "client/wallet/balance"
+    case WalletTransAction = "client/wallet/transactions"
+    case ChargeWallet = "client/wallet/charge"
+    case WalletChanges = "client/wallet/charges"
+    case WalletWithDraw = "client/wallet/withdraw"
+    case WalletWithDrawRequest = "client/wallet/withdraw-requests"
+    
+    
+    //MARK: Car Properties
+    case categories = "client/cars/categories"
+    case brands = "client/cars/brands"
+    case Models = "client/cars/models"
+    case years = "client/cars/years"
+    //MARK: General
     
     //MARK: UserProfile
-    case profile = "profile"
-    case account_request_deletion = "account/request-deletion"
+    case profile = "client/profile"
+    case account_request_deletion = "client/profile/delete/account"
+    
+    //MARK: SidMenue Views
+    
+    //MARK: Addresses
+    case client_addresses = "client/addresses"
+    //MARK: Cars
+    case profile_cars = "client/vehicles"
+    
+    
+    //MARK: Vendor
+    
+    case completeProfile = "trader/profile/complete"
+    
+    
+    case ratings = "client/ratings/trader"
+    
+    
+    
+    //MARK: AttachMents
+    case storeAttachMents = "general/attachment"
+    case getAttachMents = "general/attachment/models/list"
+    case deleteAttachMent = "general/attachment/delete"
+    
+    //MARK: General
+    case countries = "general/countries"
+    case cities = "general/cities"
+    case settings = "general/settings"
+    
+    //MARK: Pages
+    case pages = "general/pages/pages"
+    case faq = "general/pages/faqs"
+    case showPage = "general/pages/page"
+    case contact_us = "general/pages/contact"
+    
    
     
-    //MARK: Car categories
-    case categories
     
-    //MARK: Car Brands
-    case brands = "brands"
+    // MARK: Notifications
+    case notifications = "general/notifications"
     
-    //MARK: Cities
-    case cities = "cities"
+    
+    
+   
+    
+    
+    
+    
+   
+    
+    
+    
     
     //MARK: General Categories
     case general_categories = "general-categories"
     
     
-    //MARK: General Listings
-    case listings = "listings"
-    case my_listings = "my-listings"
-    case favorites_listings = "favorites/listings"
-    
-    //MARK: Car Auctions
-    case auctions = "auctions"
-    case my_participations = "my-participations"
-    case favorites_auctions = "favorites/auctions"
-    
-    //MARK: Wallet
-    case wallet_balance = "wallet/balance"
-    case wallet_transactions = "wallet/transactions"
-    case wallet_deposit = "wallet/deposit"
-    case wallet_withdraw = "wallet/withdraw"
-    
-    //MARK: Contact US
-    case contact_us = "contact-us"
-    
-    // MARK: Notifications
-    case notifications = "notifications"
-    case notifications_unread_count = "notifications/unread-count"
-    case notifications_read_all = "notifications/read-all"
-    
     //MARK: Settings&Contents
-    case settings_public = "settings/public"
-    case settings_about = "settings/about"
-    case settings_terms = "settings/terms"
-    case settings_privacy = "settings/privacy"
-    case settings_faq = "settings/faq"
+    case settings_public = "settings"
+    
+  
     
     
+    
+}
+extension EndPoints {
+    var path: String {
+        rawValue.replacingOccurrences(of: "client", with: userType)
+    }
 }

@@ -64,26 +64,35 @@ struct CustomValidationView: View {
 struct ToastView: View {
     let message: String
     let backgroundColor: Color
+    var duration: Double = 2.5   // ⏱️ وقت الاختفاء
+    @State private var isVisible = true
     
     var body: some View {
-        VStack {
-            
-            HStack {
-            
-                Text(message)
-                    .font(.body)
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(backgroundColor)
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
-                    .frame(maxWidth: .infinity) // This ensures full screen wi
-                 //   .padding(.horizontal, 20)
+        if isVisible {
+            VStack {
+                
+                HStack {
+                    
+                    Text(message)
+                        .font(.body)
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(backgroundColor)
+                        .cornerRadius(16)
+                        .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 3)
+                        .frame(maxWidth: .infinity) // This ensures full screen wi
+                    //   .padding(.horizontal, 20)
+                }
+                
+                Spacer()
+            }.onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                    withAnimation {
+                        isVisible = false
+                    }
+                }
             }
-          
-            Spacer()
         }
-       
        
        
        

@@ -8,29 +8,37 @@
 import Foundation
 import Foundation
 import Combine
-import Alamofire
+
 import SwiftUI
 class ForgetPasswordViewModel: ObservableObject {
-    @Published var errorMessage: String?
     @Published var Model: ResendOTPModel?
-    @Published var isLoading: Bool?
+    @Published var state: viewState<ResendOTPModel?> = .idle
     
-    func forgotPass(urlEndPoint:EndPoints, methodType: HTTPMethod  ,parameters : BaseParameters) {
-        let url = "\(hostName)/\(urlEndPoint.rawValue)"
-        isLoading = true
+    private let coordinator: AuthCoordinator
+    init(coordinator: AuthCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    func pop() {
+        coordinator.pop()
+    }
+    
+    func showVerify(isForget:Bool, phone: String){
+        coordinator.showVerify(isForgetPass: isForget, phone: phone)
+    }
+    
+    
+    func forgotPass(urlEndPoint:EndPoints, methodType: HTTPMethodType  ,parameters : BaseParameters) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
+        state = .loading(loading: .progress)
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: parameters.toDictionary()) { [weak self] (Model: BaseModel<ResendOTPModel>? , err : String? )in
             guard let self = self else { return }
-            if Model != nil {
+             if Model?.status == "success" {
                 self.Model = Model?.data
+                 state = .loaded(data: Model?.data)
             }else {
-                self.errorMessage = err
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    withAnimation {
-                        self.errorMessage = nil
-                    }
-                }
+                state = .error(err ?? "")
             }
-            self.isLoading = false
         }
     }
 }

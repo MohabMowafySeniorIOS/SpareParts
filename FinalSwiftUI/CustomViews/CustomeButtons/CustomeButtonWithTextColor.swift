@@ -28,7 +28,7 @@ struct CustomeButtonWithTextColor: View {
                    
         }
            .frame(maxWidth: .infinity, minHeight: 48)
-               .background(Color.white)
+               //.background(Color.white)
                .cornerRadius(24)
                .foregroundColor(Color.MainColor)
 //               .padding(0)
@@ -42,7 +42,3 @@ struct CustomeButtonWithTextColor: View {
     }
 }
 
-#Preview {
-    LoginVC()
-    
-}

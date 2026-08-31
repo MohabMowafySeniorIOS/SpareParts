@@ -7,18 +7,14 @@
 
 import Foundation
 import SwiftUI
-let FontfamilyName = "IBMPlexSansArabic"
+let FontfamilyName = "ArbFONTS-Almarai"
 
 enum AppFont: String {
   case Regular =   "IBMPlexSansArabic-Regular"
-  case extra_light = "IBMPlexSansArabic-ExtraLight"
   case Light = "IBMPlexSansArabic-Light"
   case bold = "IBMPlexSansArabic-Bold"
-  case Thin = "IBMPlexSansArabic-Thin"
-  case Medium = "IBMPlexSansArabic-Medium"
   case SemiBold = "IBMPlexSansArabic-SemiBold"
-    
-
-    
+  case Medium = "IBMPlexSansArabic-Medium"
+   
 }
 

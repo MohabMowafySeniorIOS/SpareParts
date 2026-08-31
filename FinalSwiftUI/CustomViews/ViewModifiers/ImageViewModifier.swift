@@ -2,7 +2,7 @@
 //  ImageViewModifier.swift
 //  MyAuctions
 //
-//  Created by Moaaz Ahmed on 15/07/2025.
+//  Created by Mohab Mowafy on 15/07/2025.
 //
 
 import Foundation

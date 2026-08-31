@@ -12,21 +12,23 @@ import UIKit
 extension Color {
     static let TitleColor = Color("TitleColor")
     static let CBlack = Color("CBlack") // Color from asset catalog
+    static let CWhite = Color("CWhite")
     static let CBlue = Color("CBlue") // Color from asset catalog
     static let MainColor = Color("MainColor") // Color from asset catalog
-    static let MainColor2 = Color("MainColor2") // System background color
+    static let SecondaryColor = Color("SecondaryColor")
+    static let MainColor2 = Color("SecondaryColor") // System background color
     static let CBrown = Color("CBrown")
     static let MainColor3 = Color("MainColor3") // Color from asset catalog
     static let CGray1 = Color("CGray1") // Color from asset catalog
     static let CGray2 = Color("CGray2") // Color from asset catalog
-    static let CGray3 = Color("CGray3") // System background color
-    
+    static let cGray3 = Color("CGray3") // System background color
+    static let Founts = Color("founts")
     static let CGray4 = Color("CGray4") // Color from asset catalog
     static let CGray5 = Color("CGray5") // Color from asset catalog
     static let CGreen = Color("CGreen") // Color from asset catalog
     static let CRed = Color("CRed") // System background color
     static let CSky = Color("CSky")
-    
+    static let fountsColor = Color("founts")
     static let DesColor = Color("DesColor")
     
     //static let calenderdeselect = Color("calenderdeselect")
@@ -36,7 +38,8 @@ extension Color {
     
     static let SidMenueTextColor = Color("SidMenueTextColor")
     static let BgView = Color("BgView")
- 
+    static let backGroundColor = Color("backGroundColor")
+    
     
     // RGB color with alpha
     static func rgba(red: Double, green: Double, blue: Double, alpha: Double = 1.0) -> Color {
@@ -74,6 +77,7 @@ extension UIColor {
     static let CGray2 = UIColor(named: "CGray2")
     static let CGray3 = UIColor(named: "CGray3")
     static let CGray4 = UIColor(named: "CGray4")
+    static let cGray3 = UIColor(named: "CGray3") 
     
 
     static let CGray5 = UIColor(named: "CGray5")

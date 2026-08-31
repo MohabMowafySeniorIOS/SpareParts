@@ -11,62 +11,87 @@ import Foundation
 struct BaseParameters {
     
     //MARK: Auth Paramter
-    var name : String = ""
-    var email : String = ""
-    var identity_number = ""
-    var city_id = ""
-    var password_confirmation = ""
-    var current_password = ""
-    var agree_terms = "true"
-    var phone: String = ""
-    var otp : String = ""
-    var password : String = ""
+    var full_name:  String      = ""
+    var email    : String       = ""
+    var phone    : String       = ""
+    var city_id  : String       = ""
+    var auth     : String       = ""
+    var code     : String       = ""
+    var current_password        = ""
+    var password : String       = ""
+    var password_confirmation   = ""
+    var method  : String       = ""
+    var device_token            = ""
+    var type     : String       = ""
+    var agree_terms             = ""
     
+    //MARK: Add Car
+    var car_category_id : String = ""
+    var car_brand_id    : String = ""
+    var car_model_id    : String = ""
+    var year            : String = ""
+    var chassis_number  : String = ""
+    var is_default      : String = ""
     
-    //MARK: Listings Paramter
-    var _method = ""
-    var title = ""
-  
-    var description = ""
-    var price = ""
-    var contact_phone = ""
-    var contact_email = ""
-    
-    //MARK: Listings Paramter
-    var category_id = ""
-    var general_category_id = ""
-    var brand_id = ""
-    var model_id = ""
-   var year = ""
-    var start_time = ""
-    var end_time = ""
-    var condition = ""
-    var accidents_count = ""
-    var previous_owners = ""
-    var papers_status = ""
-    var delay_years = ""
-    var mileage = ""
-   var color = ""
-    var engine_size = ""
-    var fuel_type = ""
-    var transmission = ""
-    var starting_price = ""
-    var reserve_price = ""
-    
-    var amount = ""
-     var payment_method = ""
-     var bank_account = ""
-     var bank_name = ""
-     var account_holder = ""
-    
-    var message_type = ""
-    var subject = ""
-    var message = ""
-    
-    
-    var car_condition = ""
+    //MARK: Add Addresses
+    var title           : String = ""
+    var latitude        : String = ""
+    var longitude       :String  = ""
+    var address_text    : String = ""
+    var description     : String = ""
+    var problem_type: String            = ""
+    //MARK: AttachMents
+    var media_type               = ""
+    var id                       = ""
+    var model                    = ""
+    var model_id                 = ""
+    var option                   = ""
+    var is_single                = ""
+    var model_type               = ""
    
     
+    
+    //MARK: Contact
+    var message                  = ""
+    var content                  = ""
+    
+    //MARK: WithDraw
+    var amount                   = ""
+    var bank_name                = ""
+    var account_name             = ""
+    var account_number           = ""
+    var iban                     = ""
+    
+    //MARK: Complete Profile
+    var trade_name_ar            = ""
+    var trade_name_en            = ""
+    var description_ar           = ""
+    var description_en           = ""
+    var country_id               = ""
+    var address                  = ""
+    var commercial_register      = ""
+    var bank_account_name        = ""
+    var bank_iban                = ""
+    
+    
+    //MARK: Create Order
+    var vehicle_id            = ""
+    var order_type            = ""
+    var delivery_type           = ""
+    var address_id           = ""
+    
+    //MARK: Rate
+    var rating                  = ""
+    var comment                  = ""
+    
+    var status                  = ""
+   
+    //MARK: payment_method
+    var payment_method = ""
+    var brand          = ""
+    
+    var order_id       = ""
+    var trader_id       = ""
 }
 
 extension BaseParameters {
@@ -76,20 +101,41 @@ extension BaseParameters {
         
         
         //MARK: Auth Paramter
-        if !name.isEmpty {
-            parameters["name"] = name
+        if !full_name.isEmpty {
+            parameters["full_name"] = full_name
         }
+        
         
         if !email.isEmpty {
             parameters["email"] = email
         }
         
-        if !identity_number.isEmpty {
-            parameters["identity_number"] = identity_number
+        if !phone.isEmpty {
+            parameters["phone"] = phone
         }
         
         if !city_id.isEmpty {
             parameters["city_id"] = city_id
+        }
+        
+        if !auth.isEmpty {
+            parameters["auth"] = auth
+        }
+        
+        if !code.isEmpty {
+            parameters["code"] = code
+        }
+        
+        if !password.isEmpty {
+            parameters["password"] = password
+        }
+        
+        if !device_token.isEmpty {
+            parameters["device_token"] = device_token
+        }
+        
+        if !type.isEmpty {
+            parameters["type"] = type
         }
         
         if !password_confirmation.isEmpty {
@@ -105,154 +151,188 @@ extension BaseParameters {
             parameters["agree_terms"] = agree_terms
         }
         
-        if !previous_owners.isEmpty {
-            parameters["previous_owners"] = previous_owners
-        }
-        
-        if !start_time.isEmpty {
-            parameters["start_time"] = start_time
+        if !method.isEmpty {
+            parameters["_method"] = method
         }
         
         
         if !phone.isEmpty {
             parameters["phone"] = phone
         }
+     
         
-        if !otp.isEmpty {
-            parameters["otp"] = otp
-        }
         
         if !password.isEmpty {
             parameters["password"] = password
         }
         
+       
       
-        //MARK: Listings Paramter
-        if !_method.isEmpty {
-            parameters["_method"] = _method
+        //MARK: Add Car
+        
+        if !car_category_id.isEmpty {
+            parameters["car_category_id"] = car_category_id
         }
+        
+        if !car_brand_id.isEmpty {
+            parameters["car_brand_id"] = car_brand_id
+        }
+        
+        if !car_model_id.isEmpty {
+            parameters["car_model_id"] = car_model_id
+        }
+        
+        if !year.isEmpty {
+            parameters["year"] = year
+        }
+        
+        if !chassis_number.isEmpty {
+            parameters["chassis_number"] = chassis_number
+        }
+        
+        if !is_default.isEmpty {
+            parameters["is_default"] = is_default
+        }
+      
+        
+        //MARK: Add Addresses
+        
         if !title.isEmpty {
             parameters["title"] = title
         }
-        if !general_category_id.isEmpty {
-            parameters["general_category_id"] = general_category_id
+        
+        if !latitude.isEmpty {
+            parameters["latitude"] = latitude
         }
+        
+        if !longitude.isEmpty {
+            parameters["longitude"] = longitude
+        }
+        
+        if !address_text.isEmpty {
+            parameters["address_text"] = address_text
+        }
+        
         if !description.isEmpty {
             parameters["description"] = description
         }
-        if !price.isEmpty {
-            parameters["price"] = price
-        }
-        if !contact_phone.isEmpty {
-            parameters["contact_phone"] = contact_phone
-        }
-        if !contact_email.isEmpty {
-            parameters["contact_email"] = contact_email
-        }
-       
-        //MARK: Listings Paramter
-       
-      
-     
         
-        if !category_id.isEmpty {
-            parameters["category_id"] = category_id
+        
+        //MARK: AttachMentsة
+        
+        if !media_type.isEmpty {
+            parameters["media_type"] = media_type
         }
         
-        if !contact_email.isEmpty {
-            parameters["brand_id"] = brand_id
+        if !id.isEmpty {
+            parameters["id"] = id
         }
-        
-        if !brand_id.isEmpty {
-            parameters["brand_id"] = brand_id
+        if !model.isEmpty {
+            parameters["model"] = model
         }
-        
         
         if !model_id.isEmpty {
             parameters["model_id"] = model_id
         }
         
-        if !starting_price.isEmpty {
-            parameters["starting_price"] = starting_price
+        if !option.isEmpty {
+            parameters["option"] = option
         }
         
-        if !transmission.isEmpty {
-            parameters["transmission"] = transmission
-        }
-        if !fuel_type.isEmpty {
-            parameters["fuel_type"] = fuel_type
+        if !is_single.isEmpty {
+            parameters["is_single"] = is_single
         }
         
-        if !engine_size.isEmpty {
-            parameters["engine_size"] = engine_size
+        if !model_type.isEmpty {
+            parameters["model_type"] = model_type
         }
         
-        if !color.isEmpty {
-            parameters["color"] = color
+      
+        
+        //MARK: Contact
+        if !message.isEmpty {
+            parameters["message"] = message
         }
         
-       
-        if !year.isEmpty {
-            parameters["year"] = year
+        if !content.isEmpty {
+            parameters["content"] = content
         }
+     
         
-        if !end_time.isEmpty {
-            parameters["end_time"] = end_time
-        }
-        
-        if !condition.isEmpty {
-            parameters["condition"] = condition
-        }
-        
-        
-        if !papers_status.isEmpty {
-            parameters["papers_status"] = papers_status
-        }
-        
-        if !delay_years.isEmpty {
-            parameters["delay_years"] = delay_years
-        }
-        
-        if !mileage.isEmpty {
-            parameters["mileage"] = mileage
-        }
-        
+        //MARK: WithDraw
         if !amount.isEmpty {
             parameters["amount"] = amount
-        }
-        
-        if !payment_method.isEmpty {
-            parameters["payment_method"] = payment_method
-        }
-        
-        if !bank_account.isEmpty {
-            parameters["bank_account"] = bank_account
         }
         
         if !bank_name.isEmpty {
             parameters["bank_name"] = bank_name
         }
         
-        if !account_holder.isEmpty {
-            parameters["account_holder"] = account_holder
-        }
-        if !message_type.isEmpty {
-            parameters["message_type"] = message_type
-        }
-        if !subject.isEmpty {
-            parameters["subject"] = subject
-        }
-        if !message.isEmpty {
-            parameters["message"] = message
+        if !account_name.isEmpty {
+            parameters["account_name"] = account_name
         }
         
-        if !car_condition.isEmpty {
-            parameters["car_condition"] = car_condition
+        if !account_number.isEmpty {
+            parameters["account_number"] = account_number
         }
         
+        if !iban.isEmpty {
+            parameters["iban"] = iban
+        }
         
+        //MARK: Create Order
+        if !vehicle_id.isEmpty {
+            parameters["vehicle_id"] = vehicle_id
+        }
         
+        if !order_type.isEmpty {
+            parameters["order_type"] = order_type
+        }
         
+        if !delivery_type.isEmpty {
+            parameters["delivery_type"] = delivery_type
+        }
+        
+        if !address_id.isEmpty {
+            parameters["address_id"] = address_id
+        }
+        
+        //MARK: Rate
+        if !rating.isEmpty {
+            parameters["rating"] = rating
+        }
+        
+        if !comment.isEmpty {
+            parameters["comment"] = comment
+        }
+      
+        if !status.isEmpty {
+            parameters["status"] = status
+        }
+        
+        //MARK: payment_method
+        if !payment_method.isEmpty {
+            parameters["payment_method"] = payment_method
+        }
+        
+        if !brand.isEmpty {
+            parameters["brand"] = brand
+        }
+        
+        if !problem_type.isEmpty {
+            parameters["problem_type"] = problem_type
+        }
+        
+        if !order_id.isEmpty {
+            parameters["order_id"] = order_id
+        }
+        
+        if !trader_id.isEmpty {
+            parameters["trader_id"] = trader_id
+        }
+        
+    
+       
         return parameters
     }
 }

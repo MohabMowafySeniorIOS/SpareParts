@@ -13,6 +13,7 @@ import SwiftUI
 class LanguageManager: ObservableObject {
     @Published var currentLanguage: String {
         didSet {
+            print(currentLanguage)
             UserDefaults.standard.set(currentLanguage, forKey: "selectedLanguage")
             UserDefaults.standard.synchronize()
             Bundle.setLanguage(currentLanguage)

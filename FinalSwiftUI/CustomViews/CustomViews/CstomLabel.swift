@@ -18,7 +18,7 @@ struct HeaderTitleLabe: View {
     var body: some View {
         HStack() {
             Text(labelText)
-                .font(addFont(fontType: .Medium, size: 12))
+                .font(addFont(fontType: .bold, size: 12))
                 .foregroundColor(Color.TextFieldTitleColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
              Spacer()

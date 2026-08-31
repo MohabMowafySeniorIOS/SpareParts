@@ -9,23 +9,8 @@ import SwiftUI
 import Combine
 
 struct ForgetPassVc: View {
-    // MARK: NavigationVariable
-   
-    @State private var isActive = false
-    // MARK: - State & ViewModel
-    
-    @StateObject private var viewModel = ForgetPasswordViewModel()
-    @State private var rotation: Double = 0
-    @State private var isLoading = true
-    @State private var isNavigating = false
-    @State private var showAlert = false
-    @State private var validationError = ""
-    @Environment(\.dismiss) var dismiss
-    
-    // MARK: - Phone State
-    
+  
     @State private var phoneInput = ""
-    var phoneTitleLabel = "Phone Number".localized
     @State private var phoneValidationLabel = "Phone Number Is Required".localized
     @State private var isLabelHiddenPhone = true
     @State private var isRequiredPhone = true
@@ -34,37 +19,21 @@ struct ForgetPassVc: View {
     @State private var isNumberAlert: Bool = false
     // MARK: - View
     
-    var body: some View {
-        NavigationStack {
-         
-                ZStack {
-                    errorToast
-                    if viewModel.isLoading == true {
-                        LoaderView(rotation: $rotation, isLoading: $isLoading)
-                            .frame(width: 100, height: 100)
-                    } else {
-                        mainContent
-                    }
-                }.onReceive(viewModel.$Model) { Model in
-                    guard let userData = Model else { return }
-                    self.isActive = true
-                }
-                .navigationDestination(isPresented: $isActive) {
-                    OTPView(isForgetPass: $isForgetPassw, phone : $phoneInput).navigationBarHidden(true)
-                }
-        }
-        .navigationBarBackButtonHidden()
+    @ObservedObject private var viewModel: ForgetPasswordViewModel
+    init(viewModel: ForgetPasswordViewModel) {
+        _viewModel = ObservedObject(wrappedValue: viewModel)
     }
     
-    // MARK: - Error Toast
-    
-    @ViewBuilder
-    private var errorToast: some View {
-        if let errorMessage = viewModel.errorMessage, !errorMessage.isEmpty {
-            ToastView(message: errorMessage, backgroundColor: .red)
-                .transition(.move(edge: .top))
-                .zIndex(1)
+    var body: some View {
+        ShowViewState(state: viewModel.state) { Model in
+            mainContent .background(
+                Color(Color.backGroundColor)
+            )
+        }.onReceive(viewModel.$Model) { Model in
+            guard let userData = Model else { return }
+            viewModel.showVerify(isForget: true, phone: phoneInput)
         }
+       
     }
     
     // MARK: - Main Content
@@ -72,7 +41,7 @@ struct ForgetPassVc: View {
     private var mainContent: some View {
         VStack{
             AuthHeaderView(Title: "password_reset".localized) {
-                dismiss()
+                viewModel.pop()
             }
             ScrollView {
                 VStack(spacing: 16) {
@@ -94,6 +63,7 @@ struct ForgetPassVc: View {
             Image.Splashlogo
                 .resizable()
                 .logoSize()
+               
             
             Text("enter_phone_number".localized)
                 .font(.custom(AppFont.SemiBold.rawValue, size: 19))
@@ -120,8 +90,8 @@ struct ForgetPassVc: View {
                     HStack{
                         Spacer()
                         Text("phone_number_incorrect".localized)
-                            .foregroundStyle(.cRed)
-                            .font(addFont(fontType: .Medium, size: 12))
+                            .foregroundStyle(Color.CRed)
+                            .font(addFont(fontType: .bold, size: 12))
                         
                     }
                 }
@@ -137,7 +107,6 @@ struct ForgetPassVc: View {
     
     private var buttonSection: some View {
         VStack(spacing: 12) {
-            var cancelable = Cancelable()
             ContentButtonView(title: "confirm_button".localized) {
                 if isNumberValid(text: phoneInput).0 {
                     viewModel.forgotPass(urlEndPoint: .forgot_password, methodType: .post, parameters: .init(phone: phoneInput))
@@ -150,6 +119,4 @@ struct ForgetPassVc: View {
     }
 }
 
-#Preview {
-    ForgetPassVc()
-}
+

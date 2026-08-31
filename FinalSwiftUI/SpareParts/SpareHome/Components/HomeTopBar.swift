@@ -2,55 +2,64 @@
 //  HomeTopBar.swift
 //  MyAuctions
 //
-//  Created by Moaaz on 10/07/2025.
+//  Created by Mohab on 10/07/2025.
 //
 import SwiftUI
 
 
 struct HomeTopBar: View {
-    
+
     var userName: String
-    @State var notificationCount: Int = 10
+    var notificationAction: (()->Void)
+    var notificationCount: Int = 0
     var body: some View {
-        ZStack{
-            Circle()
-                .fill(.cWhite)
-                .frame(width: 50,height: 50)
-                .overlay {
-                    Text("LOGO")
-                        .font(addFont(fontType: .Medium, size: 15))
-                        .foregroundStyle(.cBlack)
-                }
-            HStack{
+        ZStack {
+
+            HStack {
                 Text("Hello".localized + " " + userName)
-                    .foregroundStyle(.cWhite)
-                Spacer()
+                    .foregroundStyle(Color.CWhite)
+                    .lineLimit(2)                 // يمنع النزول سطر تاني
+                  //  .truncationMode(.tail)        // يحط ... لو النص طويل
+
+                Spacer(minLength: 200)
+
                 Image(systemName: "bell.fill")
                     .font(.title)
-                    .foregroundColor(Color.white)
-                    .overlay(
-                        alignment: .topTrailing,
-                        content: {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.red)
-                                    .frame(width: 15, height: 15)
-                                Text(
-                                    notificationCount > 99
-                                        ? "99+"
-                                        : "\(notificationCount)"
+                    .foregroundColor(.white)
+                    .overlay(alignment: .topTrailing) {
+                        if notificationCount > 0 {
+                            Text(notificationCount > 99 ? "99+" : "\(notificationCount)")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundStyle(Color.CWhite)
+                                .padding(.horizontal, 5)
+                                .frame(minWidth: 18, minHeight: 18)
+                                .background(
+                                    Capsule().fill(Color.CRed)
                                 )
-                                .foregroundColor(.white)
-                                .font(.system(size: 10))
-                                .minimumScaleFactor(0.5)
-                                .lineLimit(1)
-                                .padding(2)
-                            }
-                        })
+                                .overlay(
+                                    Capsule().stroke(Color.CWhite, lineWidth: 1.5)
+                                )
+                                .offset(x: 10, y: -8)
+                        }
+                    }
+                    .onTapGesture {
+                        notificationAction()
+                    }
             }
+            
+
+//            Circle()
+//                .fill(Color.CWhite)
+//                .frame(width: 50, height: 50)
+//                .overlay {
+//                    Image(systemName: "Splashlogo")
+//                        .resizable()
+//                        .frame(width: 50, height: 50)
+//                        .foregroundStyle(Color.CBlack)
+//                }
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(.main)
+        .background(Color.MainColor)
     }
 }

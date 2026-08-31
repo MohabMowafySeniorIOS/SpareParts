@@ -1,59 +1,61 @@
 //
-//  FinalSwiftUIApp.swift
-//  FinalSwiftUI
+
 import SwiftUI
 import IQKeyboardManagerSwift
 import SwiftUI
 import FirebaseCore
+import FirebaseCrashlytics
 import UserNotifications
-//import GoogleMaps
-//import GooglePlaces
 import FirebaseMessaging
+import GoogleMaps
+import UIKit
 
 
 @main
 struct FinalSwiftUIApp: App {
-    @StateObject private var viewModel = sidMenueViewModel()
+   
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var networkMonitor = NetworkMonitor()
+    @StateObject private var appStatusManager = AppStatusManager.shared
     init() {
+        // NOTE: the real, reliable switch is `UIUserInterfaceStyle = Light`
+        // in Info.plist + `.preferredColorScheme(.light)` below.
+        // The appearance-proxy call only affects UIKit views created after it,
+        // so on its own it silently failed on some devices/iOS versions and
+        // left SwiftUI in dark mode (white text on the white field background).
         UIView.appearance().overrideUserInterfaceStyle = .light
+        UITextField.appearance().overrideUserInterfaceStyle = .light
+        UITextField.appearance().textColor = UIColor(named: "CBlack") ?? .black
+        UITextView.appearance().overrideUserInterfaceStyle = .light
     }
-   // @StateObject var appState = AppState()
+ 
     @StateObject var languageManager = LanguageManager()
-    
-    @StateObject var coordinator = AppState()
-    
+    @State private var refreshID = UUID()   // 🔁 used to simulate restart
     var body: some Scene {
         WindowGroup {
             Group {
-                if networkMonitor.isConnected {
-                    switch coordinator.currentScreen {
-                    case .login:
-                        LoginVC()
-                            .environmentObject(coordinator)
-                        
-                    case .home:
-                        MainTabView()
-                            .environmentObject(coordinator)
-                        
-                    case .splash:
-                        SplashScreenView().environmentObject(coordinator)
-                    }
-                   
+                if let status = appStatusManager.status {
+                    // Forced maintenance / update screen — takes over the whole
+                    // app, no matter which screen the user was standing on.
+                    UpdateStatusOverlayView(status: status)
+                } else if networkMonitor.isConnected {
+                    RootView()
+
                 } else {
                     NoNetView(title: "Something went wrong! 🔧".localized, image: "Clip path group", Btn_Title: "Back To Home".localized)
                 }
             }
-        
+            
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.gray.opacity(0.2)) // Background color
+            .preferredColorScheme(.light)   // pins SwiftUI's colorScheme on every device
             .onAppear {
                     print("Monitoring network status...")
                 }
                 //.environmentObject(coordinator)
                 .environmentObject(languageManager)
+                
                 .environment(\.layoutDirection, languageManager.layoutDirection)
           
         }
@@ -68,8 +70,40 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         showIQkeyboard()
         FirebaseApp.configure()
-        Messaging.messaging().delegate = self
-        registerForPushNotifications()
+        AppStatusManager.shared.startListening()
+
+        GMSServices.provideAPIKey(Google_Key)
+        
+        let success = GMSServices.provideAPIKey(Google_Key)
+        Task {
+
+            do {
+
+                let token = try await Messaging.messaging().token()
+
+                print("✅ FCM Token: \(token)")
+
+            } catch {
+
+                print(error)
+
+            }
+
+        }
+        print("Google Maps initialized: \(success)")
+
+             UNUserNotificationCenter.current().delegate = self
+             Messaging.messaging().delegate = self   // ✅ مهم
+
+             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+                 print("Permission granted:", granted)
+                 if granted {
+                     DispatchQueue.main.async {
+                         application.registerForRemoteNotifications()
+                     }
+                 }
+             }
+
 //        GMSServices.provideAPIKey(Google_Key)
 //        GMSPlacesClient.provideAPIKey(Google_Key)
         return true
@@ -96,14 +130,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
         }
     }
 
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print("Device Token: \(token)")
-    }
+   
 
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register for remote notifications: \(error.localizedDescription)")
-    }
+   
 }
 
 
@@ -113,62 +142,31 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
 
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification,
-        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-    ) {
-        completionHandler([.alert, .sound, .badge])
-    }
+  
+        func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+            print("✅ FCM Token:", fcmToken ?? "nil")
+            Helper.SaveFcmtoken(Fcmtoken: fcmToken ?? "")
+            // ابعته للباك اند لو هتستهدف الجهاز
+        }
+
+        // ✅ APNs token (لازم على جهاز حقيقي)
+        func application(_ application: UIApplication,
+                         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+            Messaging.messaging().apnsToken = deviceToken
+            
+            print("✅ APNs token received")
+        }
+
+        // عشان يظهر في foreground
+        func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                    willPresent notification: UNNotification,
+                                    withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+            completionHandler([.banner, .sound, .badge])
+        }
     
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse,
-        withCompletionHandler completionHandler: @escaping () -> Void
-    ) {
-        print("User interacted with notification: \(response.notification.request.content.userInfo)")
-        completionHandler()
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error.localizedDescription)")
     }
 }
 
-//class AppState: ObservableObject {
-//    enum RootViewType {
-//        case Splash
-//        case Login
-//        case Main
-//    }
-//    @Published var RootView : RootViewType = .Splash
-//    @Published var mainTabSelection: Int = 4 // 4 = Home tab as default
-//
-//    func restartApp(RootView:RootViewType) {
-//     
-//        self.RootView = RootView
-//       
-//    }
-//}
-class AppState: ObservableObject {
-    enum Screen {
-        case splash
-        case login
-        case home
-       
-    }
-    @Published var mainTabSelection: Int = 4 // 4 = Home tab as default
-    @Published var currentScreen: Screen = .splash
-    @Published var id = UUID()
 
-    func goToHome() {
-        currentScreen = .home
-        id = UUID()
-    }
-
-    func goToSplash() {
-        currentScreen = .splash
-        id = UUID()
-    }
-
-    func logout() {
-        currentScreen = .login
-        id = UUID()
-    }
-}

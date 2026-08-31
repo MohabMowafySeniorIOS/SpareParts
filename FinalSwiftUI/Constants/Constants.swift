@@ -7,11 +7,16 @@
 
 import Foundation
 import SwiftUI
-let Google_Key = "AIzaSyBO9YeOCVVBLG74bNs14sxItJxruAbeQDU"
+let Google_Key = "AIzaSyB5zOHgZy-v918XuCMJvoEdujjFZx5sZ28"
 let appName = (Bundle.main.infoDictionary!["CFBundleName"] as? String) ?? ""
+
 let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+// TODO: replace with the real numeric App Store Connect app ID (e.g. "id1234567890")
+let AppStoreAppId = "6759914792"
 let Currency = "R.S".localized
-let hostName = "https://parts-car.e3gaz.com/api"
+let hostName = "https://drivak.com.sa/api/"
+let isClient = true
+let userType = isClient ? "client" : "trader"
 let appLanguage = Bundle.main.preferredLocalizations.first ?? "en"
 let screenWidth = UIScreen.main.bounds.width
 
@@ -28,6 +33,5 @@ struct ConstantKeys {
     @State  var userName_title_label = "User Name".localized
     @State  var userName_Validation_label = "User Name Is Required".localized
     @State  var userName_PlaceHolder_label = "User Name".localized
-    
     
 }

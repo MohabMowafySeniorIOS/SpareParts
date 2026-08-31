@@ -36,7 +36,3 @@ struct SkipButton: View {
     }
 }
 
-#Preview {
-    LoginVC()
-    
-}

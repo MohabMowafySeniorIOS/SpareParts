@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyC6BWBvzCabYB5olghxjUrSMQRsTeG3hxQ</string>
+	<string>AIzaSyCNhNu6hhVkHESSx4Z7CT46Hy2-gHQ5RkI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>41063052575</string>
+	<string>437333362120</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bb4it.Shine</string>
+	<string>com.HeadShot.SpareParts</string>
 	<key>PROJECT_ID</key>
-	<string>shine-laundries</string>
+	<string>car-parts-9e92b</string>
 	<key>STORAGE_BUCKET</key>
-	<string>shine-laundries.firebasestorage.app</string>
+	<string>car-parts-9e92b.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:41063052575:ios:a3e1dc1067efbe487eec2a</string>
+	<string>1:437333362120:ios:e77b29bc7115887b79ecfd</string>
 </dict>
 </plist>

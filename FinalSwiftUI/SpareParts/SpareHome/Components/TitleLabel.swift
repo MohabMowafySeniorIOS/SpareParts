@@ -2,17 +2,23 @@
 //  TitleLabel.swift
 //  MyAuctions
 //
-//  Created by Moaaz on 10/07/2025.
+//  Created by Mohab on 10/07/2025.
 //
 import SwiftUI
 
 struct TitleLabel: View {
     var title: String
     var body: some View {
-        HStack{
+        HStack(spacing: 6) {
             Text(title.localized)
-                .foregroundStyle(.main)
-                .font(addFont(fontType: .Medium, size: 18))
+                .foregroundStyle(Color.SecondaryColor)
+                .font(addFont(fontType: .bold, size: 16))
+
+            Rectangle()
+                .fill(Color.MainColor)
+                .frame(width: 3, height: 16)
+                .cornerRadius(2)
+
             Spacer()
         }
     }

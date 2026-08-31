@@ -3,7 +3,7 @@ import SwiftUI
 struct LogoModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .frame(width: 150,height: 70)
+            .frame(width: 225,height: 105)
     }
 }
 

@@ -7,22 +7,31 @@
 
 import Foundation
 import Alamofire
+import Combine
 var counter = 1
+
+final class SessionEvents {
+    static let shared = SessionEvents()
+    let unauthorized = PassthroughSubject<Void, Never>()
+    private init() {}
+}
+
 struct APIClient {
     static let shared = APIClient()
     private init() {}
     func performRequestWithAlamofire<T: Decodable>(
         urlString: String,
-        method: HTTPMethod,
+        method: HTTPMethodType,
         parameters: [String: Any]?,
         
         completion: @escaping (T? ,String?)->Void) {
             var headers : HTTPHeaders?
-            let lang = Language.english.rawValue
+            let lang = UserDefaults.standard.string(forKey: "selectedLanguage") ?? "en"
             headers = [
                 "Accept-Language": lang,
                 "Content-Type": "application/json",
                 "Accept": "application/json",
+                "user-type": userType
             ]
             
             if AuthService.userData?.token != "" && AuthService.userData?.token  != nil {
@@ -35,16 +44,19 @@ struct APIClient {
           
             AF.request(
                 urlString,
-                method: method,
+                method: HTTPMethod(rawValue: method.rawValue),
                 parameters: parameters,
                 encoding: JSONEncoding.default, // Use `URLEncoding.default` for GET queries
                 headers: headers
             )
+            .validate(statusCode: 200...300)
             .responseData { response in
+                
+               
                 switch response.result {
                 case .success(let data):
                     
-                    print(data)
+                    print(data, response.response?.statusCode)
                     guard let data = response.data else {
                         return
                     }
@@ -55,7 +67,7 @@ struct APIClient {
                         if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
                            let jsonDict = jsonObject as? [String: Any] {
                             print("Dictionary response: \(jsonDict)")
-                            if ((jsonDict["status"] as? Int) == 0) || ((jsonDict["status"] as? Bool) == false){
+                            if ((jsonDict["status"] as? String) == "fail") || ((jsonDict["status"] as? Bool) == false){
                                 completion(nil , jsonDict["message"] as? String)
                             }
                         } else {
@@ -77,6 +89,61 @@ struct APIClient {
             }
         }
     
+    func performFormRequestWithAlamofire<T: Decodable>(
+        urlString: String,
+        method: HTTPMethodType,
+        parameters: [String: Any]?,
+        completion: @escaping (T?, String?) -> Void
+    ) {
+        let lang = UserDefaults.standard.string(forKey: "selectedLanguage") ?? "en"
+        var headers: HTTPHeaders = [
+            "Accept-Language": lang,
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
+            "user-type": userType
+        ]
+        
+        if let token = AuthService.userData?.token, !token.isEmpty {
+            headers["Authorization"] = "Bearer \(token)"
+        }
+        
+        print("HEADERS-------->\(headers)")
+        print("parameters-------->\(parameters)")
+        print("method-------->\(method)")
+        print("urlString-------->\(urlString)")
+        
+        AF.request(
+            urlString,
+            method: HTTPMethod(rawValue: method.rawValue),
+            parameters: parameters,
+            encoding: URLEncoding.httpBody,
+            headers: headers
+        )
+        .validate(statusCode: 200...300)
+        .responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+                       let jsonDict = jsonObject as? [String: Any],
+                       ((jsonDict["status"] as? String) == "fail" || (jsonDict["status"] as? Bool) == false) {
+                        completion(nil, jsonDict["message"] as? String)
+                        return
+                    }
+                    
+                    let decoded = try JSONDecoder().decode(T.self, from: data)
+                    completion(decoded, nil)
+                } catch {
+                    completion(nil, "\(error)")
+                    print("----------->>>>>>>>>>>>>>>", error, "----------->>>>>>>>>>>>>>>>>>")
+                }
+            case .failure(let error):
+                print("----------->>>>>>>>>>>>>>>", error.localizedDescription, "----------->>>>>>>>>>>>>>>>>>")
+                completion(nil, handleAlamofireError(response: response, error: error))
+            }
+        }
+    }
+    
     func uploadMultipartWithAlamofire<T: Decodable>(
         urlString: String,
         images: UIImage = UIImage(),
@@ -84,6 +151,7 @@ struct APIClient {
         additional_images: [UIImage] = [],
         additional_imageFieldName: String = "additional_images[]", // Use "file" if it's a single image field
         profile_image : UIImage? = nil,
+        file : UIImage? = nil,
         
         parameters: [String: Any] = [:],
         completion: @escaping (T?, String?) -> Void
@@ -96,6 +164,7 @@ struct APIClient {
         
         if let token = AuthService.userData?.token, !token.isEmpty {
             headers["Authorization"] = "Bearer \(token)"
+            headers["user-type"] = "client"
         }
         
         print("HEADERS-------->\(headers)")
@@ -124,6 +193,11 @@ struct APIClient {
                     let name = "profile_image"
                     multipartFormData.append(imageData, withName: name, fileName: "image.jpg", mimeType: "image/jpeg")
                 }
+                
+                if let imageData = file?.jpegData(compressionQuality: 0.8) {
+                    let name = "file"
+                    multipartFormData.append(imageData, withName: name, fileName: "image.jpg", mimeType: "image/jpeg")
+                }
 
                 // Append other form parameters
                 for (key, value) in parameters {
@@ -144,7 +218,7 @@ struct APIClient {
                    
                     if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
                        let jsonDict = jsonObject as? [String: Any],
-                       ((jsonDict["status"] as? Int) == 0 || (jsonDict["status"] as? Bool) == false) {
+                       ((jsonDict["status"] as? String) == "fail" || (jsonDict["status"] as? Bool) == false) {
                         print(jsonDict)
                         completion(nil, jsonDict["message"] as? String)
                         return
@@ -170,15 +244,33 @@ struct APIClient {
         if let responseCode = response.response?.statusCode {
             print("HTTP Status Code: \(responseCode)")
             err = "User Not Authenticated"
+          
             if let responseCode = response.response?.statusCode, responseCode == 401 {
                 // restart app to login screen
+                print("HTTP Status Code: \(responseCode)",response.request?.url,response.request?.headers)
+                AuthService.userData = nil
+                DispatchQueue.main.async {
+                       SessionEvents.shared.unauthorized.send()
+                   }
             }
         }
         
         if let underlyingError = error.underlyingError {
             print("Underlying Error: \(underlyingError.localizedDescription)")
         }
-        NoNetView(title: "Something went wrong! 🔧".localized, image: "Clip path group", Btn_Title: "Back To Home".localized)
+        
+        if let data = response.data  {
+            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: [])
+           if let jsonDict = jsonObject as? [String: Any] {
+                print("Dictionary response: \(jsonDict)")
+               if ((jsonDict["message"] as? String)?.count ?? 0) > 0 {
+                   err = (jsonDict["message"] as? String)!
+                   return err
+               }
+            }
+        }
+
+      
         switch error {
         case .sessionTaskFailed(let sessionError):
             err = "Session Task Failed: \(sessionError.localizedDescription)"

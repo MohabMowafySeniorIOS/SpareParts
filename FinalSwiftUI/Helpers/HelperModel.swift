@@ -8,7 +8,7 @@
 import Foundation
 import Foundation
 struct BaseModel<T:Codable>: Codable {
-    let status: Bool?
+    let status: String?
     let message: String?
     let data: T?
 
@@ -21,15 +21,13 @@ struct BaseModel<T:Codable>: Codable {
 }
 
 struct BaseModelPaginate<T:Codable>: Codable {
-    let status : Bool?
+    let status : String?
     var data : BaseModelWithPagination<T>?
-    let message : String?
-    let code : Int?
+    let message: String?
     enum CodingKeys: String, CodingKey {
         case status = "status"
         case data = "data"
         case message = "message"
-        case code = "code"
     }
 }
 

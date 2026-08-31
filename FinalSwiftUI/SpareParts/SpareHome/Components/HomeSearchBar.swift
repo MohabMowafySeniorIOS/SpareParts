@@ -1,41 +1,48 @@
+
 //
 //  HomeSearchBar.swift
 //  MyAuctions
 //
-//  Created by Moaaz on 10/07/2025.
+//  Created by Mohab on 10/07/2025.
 //
 import SwiftUI
-
+var searchText = ""
 struct HomeSearchBar: View {
     
     @Binding var searchFieldText: String
+    var searchAction: ()->Void
     var body: some View {
         HStack{
             Button {
-                
+                searchAction()
             } label: {
                 Text("search".localized)
+                    .font(.custom(AppFont.bold.rawValue, size: 16))
                     .padding()
                     .padding(.horizontal)
-                    .foregroundStyle(.cWhite)
-                    .background(.main)
+                    .foregroundStyle(Color.CWhite)
+                    .background(Color.MainColor)
             }
             HStack{
                 TextField("vendor_name".localized, text: $searchFieldText)
+                    .onChange(of: searchFieldText) { newValue in
+                        searchText = newValue
+                    }
+                    .font(.custom(AppFont.bold.rawValue, size: 16))
+                    .foregroundStyle(Color.MainColor)
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 20))
-                    .foregroundStyle(.main)
+                    .foregroundStyle(Color.MainColor)
             }
             .padding(.horizontal)
             
         }
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(style: StrokeStyle())
-                .fill(.main)
-                .padding(1)
-        )
-        .cornerRadius(10)
+        .onAppear {
+            searchFieldText = searchText
+        }
+        .background(Color.CWhite)
+        .cornerRadius(28)
+        .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 3)
         .padding(.vertical)
     }
 }

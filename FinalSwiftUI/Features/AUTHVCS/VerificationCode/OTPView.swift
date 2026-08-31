@@ -7,42 +7,38 @@
 import SwiftUI
 
 struct OTPView: View {
-    @Environment(\.dismiss) var dismiss
-    @Binding  var isForgetPass : Bool
+    
+    var isForgetPass : Bool 
     @State private var isActive = false
-    @Binding  var phone :String
+    var phone :String
     @State private var isPresented: Bool = false
     @State private var rotation: Double = 0
     @State private var isLoading = true
-    @StateObject private var viewModel = VerificationViewModel()
+    @ObservedObject private var viewModel: VerificationViewModel
+    init(phone:String,isForgetPass: Bool,viewModel: VerificationViewModel) {
+        self.phone = phone
+        self.isForgetPass = isForgetPass
+        _viewModel = ObservedObject(wrappedValue: viewModel)
+    }
     
-    @State private var timerSeconds = 3
+    @State private var timerSeconds = 30
     @State private var isResendButtonEnabled = false
     @State private var timer: Timer? = nil
     
     @State private var code: String = ""
     @State private var text: String = ""
     
-    private let slotCount: Int = 4
-    private let maxLength: Int = 4
     private let defaultCharacter: String = "-"
     
     var onCompletion: ((String) -> Void)? = nil
     
     @State private var naviToChangePassword: Bool = false
     
-//    init(slotCount: Int = 4, onCompletion: ((String) -> Void)? = nil) {
-//        self.slotCount = slotCount
-//        self.onCompletion = onCompletion
-//    }
+    var slotCount = 4
     
     var body: some View {
-        NavigationStack {
-//            if isActive {
-//                MainTabView()
-//            } else {
+
                 ZStack {
-                    NavigationLink("", destination: ChangePasswordView(otp: $code, phone: $phone), isActive: $naviToChangePassword)
                     if let errorMessage = viewModel.errorMessage, !errorMessage.isEmpty {
                         ToastView(message: errorMessage, backgroundColor: .red)
                             .transition(.move(edge: .top))
@@ -55,17 +51,19 @@ struct OTPView: View {
                     } else {
                         VStack(spacing: 50) {
                             AuthHeaderView(Title: "") {
-                                dismiss()
+                                viewModel.disMiss()
                             }
                             headerView
                             codeInputSection
                             Spacer()
-                        }
+                        }.background(
+                            Color(Color.backGroundColor)
+                        )
                     }
                 }
                 .onReceive(viewModel.$activateModel) { Model in
                     if viewModel.activateModel != nil {
-                        dismiss()
+                        viewModel.disMiss()
                     }
                     
                 }
@@ -78,9 +76,7 @@ struct OTPView: View {
                     
                 }
                 
-           // }
-        }
-        .navigationBarBackButtonHidden()
+           
     }
     
     private var headerView: some View {
@@ -101,7 +97,7 @@ struct OTPView: View {
                         .foregroundColor(Color.DesColor)
                         .multilineTextAlignment(.center)
                     
-                    Text("+966*********")
+                    Text("+966\(phone)")
                         .font(.custom(AppFont.Regular.rawValue, size: 14))
                         .foregroundColor(Color.DesColor)
                         .multilineTextAlignment(.center)
@@ -125,16 +121,19 @@ struct OTPView: View {
         ZStack {
             HStack(spacing: 8) {
                 ForEach(0..<slotCount, id: \.self) { index in
-                    Spacer()
                     Text(code.count > index ? String(code[code.index(code.startIndex, offsetBy: index)]) : defaultCharacter)
-                        .foregroundStyle(.main)
-                        .frame(width: 60, height: 60)
+                        .foregroundStyle(Color.MainColor)
+                        .frame(maxWidth: .infinity, maxHeight: 48)
                         .font(addFont(fontType: .bold, size: 16))
                         .multilineTextAlignment(.center)
                         .foregroundColor(code.count > index ? Color.MainColor : .gray)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(code.count > index ? Color.MainColor : .gray, lineWidth: 1))
-                        .background(code.count > index ? Color.blue.opacity(0.1) : Color.clear)
-                    Spacer()
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(code.count > index ? Color.blue.opacity(0.1) : Color.CWhite)
+                        )
+                        .overlay(RoundedRectangle(cornerRadius: 16).stroke(code.count > index ? Color.MainColor : .gray, lineWidth: 1))
+                        .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
+
                 }
             }
             .environment(\.layoutDirection,.leftToRight)
@@ -167,14 +166,17 @@ struct OTPView: View {
                 .cornerRadius(8)
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.clear, lineWidth: 1))
                 .onChange(of: code) { newValue in
-                    if newValue.count > maxLength {
-                        code = String(newValue.prefix(maxLength))
-                        if isForgetPass {
-                            naviToChangePassword = true
-                        }else {
-                            viewModel.VerifyAccount(urlEndPoint: .verify_phone, methodType: .post, parameters: .init(phone: phone,otp: code))
-                        }
-                       
+                    // Arabic / Persian keyboards emit ٠-٩ / ۰-۹ — normalise so
+                    // the digits render and the code posted to the API is ASCII.
+                    let normalized = newValue.toEnglishDigits().filter { $0.isNumber }
+                    if normalized != newValue {
+                        code = String(normalized.prefix(slotCount))
+                        return
+                    }
+                    if newValue.count > slotCount - 1 {
+                        code = String(newValue.prefix(slotCount))
+                        self.handleResponse()
+
                     }
                 }
         }
@@ -201,12 +203,19 @@ struct OTPView: View {
             
             ContentButtonView(title: "confirm_button".localized) {
              
-             
-                    viewModel.VerifyAccount(urlEndPoint: .verify_phone, methodType: .post, parameters: .init(phone: phone,otp: code))
-                
+                self.handleResponse()
+                  
             }
-            .padding(.horizontal,30)
+            .padding(30)
             
+        }
+    }
+    
+    func handleResponse(){
+        if isForgetPass {
+            viewModel.ShowChangePassword(otp: code, phone: phone)
+        }else {
+            viewModel.VerifyAccount(urlEndPoint: .verify_phone, methodType: .post, parameters: .init(auth: phone, code: code, device_token: Helper.getFcmtoken() ?? "", type: "ios"))
         }
     }
     
@@ -229,15 +238,19 @@ struct OTPView: View {
     }
     
     private func resendCode() {
-        // Add resend logic here
-        viewModel.ResendCode(urlEndPoint: .resend_otp, methodType: .post, parameters: .init(phone: phone))
-       
-       
+        // The API rejected this call with "الحقل الهاتف مطلوب" because the
+        // number was sent under the wrong key. `client/auth/verify` and
+        // `client/auth/login` both use `auth`, so send BOTH keys here —
+        // whichever one the endpoint validates, it is now present.
+        let cleanPhone = phone
+            .toEnglishDigits()
+            .filter { $0.isNumber }
+
+        viewModel.ResendCode(
+            urlEndPoint: .resend_otp,
+            methodType: .post,
+            parameters: .init(phone: cleanPhone, auth: cleanPhone)
+        )
     }
 }
 
-struct VerificationCodeView_Previews: PreviewProvider {
-    static var previews: some View {
-        OTPView(isForgetPass: .constant(false), phone: .constant("dasdas"))
-    }
-}

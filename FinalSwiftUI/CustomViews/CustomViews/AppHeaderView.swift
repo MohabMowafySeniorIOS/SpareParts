@@ -8,23 +8,28 @@
 import SwiftUI
 
 struct AppHeaderView: View {
-    @State var Title : String
+     var Title : String
     var action: () -> Void // Action closure
+    var hideBackButton: Bool = false
     var body: some View {
         VStack {
             ZStack {
                 Text(Title.localized).foregroundColor(Color.white)
-                HStack {
-                    Button(action : action) {
-                        Image.RightArrow.padding().scaleEffect(x:appLanguage == "en" ? -1 : 1, y: 1)
-                    }.frame(width: 32,height: 32)
-                        .padding(16)
-                    Spacer()
+                    .font(.custom(AppFont.bold.rawValue, size: 16))
+                if !hideBackButton {
+                    HStack {
+                        Button(action : action) {
+                            Image.RightArrow.padding().scaleEffect(x:appLanguage == "en" ? -1 : 1, y: 1)
+                        }.frame(width: 32,height: 32)
+                            .padding(16)
+                        Spacer()
+                    }
                 }
+                
             }
         }
         .frame(maxWidth: .infinity, minHeight: 64)
-        .background(Color.main)
+        .background(Color.MainColor)
         .environment(\.layoutDirection,appLanguage == "en" ? .leftToRight : .rightToLeft)
         
     }
@@ -40,15 +45,13 @@ struct AuthHeaderView: View {
             ZStack {
                 HStack {
                     Button(action : action) {
-                        Image.authRightArrow.padding().scaleEffect(x:appLanguage == "ar" ? -1 : 1, y: 1)
+                        Image.authRightArrow.padding().scaleEffect(x:appLanguage == "en" ? -1 : 1, y: 1)
                     }.frame(width: 32,height: 32)
                         .padding(16)
                     Spacer()
                 }
             }
         }
-        .frame(width: .infinity,height: 64)
-       // .background(Color.main)
         .environment(\.layoutDirection,appLanguage == "en" ? .leftToRight : .rightToLeft)
         
     }

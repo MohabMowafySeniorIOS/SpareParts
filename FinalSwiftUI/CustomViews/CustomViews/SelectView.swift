@@ -20,7 +20,7 @@ struct SelectedCustomView: View {
                         ZStack {
                             HStack {
                                 
-                                Image(isSelected ? "check" : "uncheck").renderingMode(.template).tint(isSelected ? Color.MainColor : Color.cGray1)
+                                Image(isSelected ? "check" : "uncheck").renderingMode(.template).tint(isSelected ? Color.MainColor : Color.CGray1)
                                     .padding(14)
                                 Spacer()
                             }
@@ -29,8 +29,8 @@ struct SelectedCustomView: View {
                             HStack {
                                 Spacer()
                                     Text(title)
-                                    .foregroundColor(isSelected ? Color.MainColor : Color.cGray1)
-                                    .font(.custom(AppFont.Regular.rawValue, size: 12))
+                                    .foregroundColor(isSelected ? Color.MainColor : Color.CGray1)
+                                    .font(.custom(AppFont.Regular.rawValue, size: 16))
                                 
                                 Spacer()
                             }
@@ -44,8 +44,8 @@ struct SelectedCustomView: View {
                     }
                 }.frame(width: .infinity,height: 48)
             .frame(maxWidth: .infinity)
-            .cornerRadius(8)
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke((isSelected) ? Color.MainColor : Color.gray.opacity(0.1), lineWidth: 1))
+            .cornerRadius(16)
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke((isSelected) ? Color.MainColor : Color.gray.opacity(0.1), lineWidth: 1))
             .background(isSelected ?  Color.MainColor.opacity(0.1) : Color.clear)
             
     }

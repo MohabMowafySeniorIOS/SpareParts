@@ -8,31 +8,147 @@
 
 import Foundation
 import Combine
-import Alamofire
+
 import SwiftUI
 class ProfileViewModel: ObservableObject {
-    @Published var errorMessage: String?
-    @Published var userModel: UserData?
-    @Published var isLoading: Bool?
+    @Published var userModel: LoginData?
+    @Published var state: viewState<LoginData?> = .idle
     
-    func updateProfile(urlEndPoint:EndPoints = .profile, methodType: HTTPMethod = .post,profile_image : UIImage? ,parameters : BaseParameters) {
-        let url = "\(hostName)/\(urlEndPoint.rawValue)"
-        isLoading = true
-        APIClient.shared.uploadMultipartWithAlamofire(urlString: url,profile_image: profile_image, parameters: parameters.toDictionary()) { [weak self] (Model: BaseModel<UserData>? , err : String? )in
+    @Published var countryArray = [CountryData]()
+    @Published var cityArray = [CityData]()
+    @Published var selectedCcountry: CountryData? = nil
+    @Published var selectedCity: CityData? = nil
+    
+    @ObservedObject var coordinator: MainCoordinator
+    
+    init(coordinator: MainCoordinator) {
+        _coordinator = ObservedObject(wrappedValue: coordinator)
+      
+        fetchCountries()
+        fetchCities()
+    }
+    
+    func disMiss(){
+        coordinator.path.removeLast()
+    }
+    
+    func destoryAttach(id:String,completion: @escaping () -> Void ) {
+        let url = "\(hostName)general/attachment/delete/\(id)"
+        state = .loading(loading: .progress)
+        
+       
+        APIClient.shared.performRequestWithAlamofire(urlString: url, method: .post, parameters:nil) { [weak self] (Model: BaseModel<HomeResponse>? , err : String? )in
             guard let self = self else { return }
-            if Model != nil {
-                userModel = Model?.data
-            }else {
-                self.errorMessage = err
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    withAnimation {
-                        self.errorMessage = nil
-                    }
-                }
+            if Model?.status == "success" {
+                userModel?.avatar = nil
+                self.state = .loaded(data: self.state.data)
+                completion()
+            } else {
+                self.state = .error(err ?? "")
             }
-            self.isLoading = false
         }
     }
+    
+    func getProfile(urlEndPoint:EndPoints = .profile, methodType: HTTPMethodType = .get) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
+        
+        state = .loading(loading: .progress)
+        APIClient.shared.performRequestWithAlamofire(urlString: url,method: .get,parameters: nil){ [weak self] (Model: BaseModel<LoginData>? , err : String? )in
+            guard let self = self else { return }
+             if Model?.status == "success" {
+                 userModel = Model?.data
+                 AuthService.userData?.full_name = userModel?.full_name
+                 AuthService.userData?.email = userModel?.email
+                 AuthService.userData?.city_name = userModel?.city_name
+                 AuthService.userData?.city_id = userModel?.city_id
+                 AuthService.userData?.country_name = userModel?.country_name
+                 AuthService.userData?.country_id = userModel?.country_id
+                 AuthService.userData?.phone = userModel?.phone
+                 AuthService.userData?.avatar = userModel?.avatar
+                
+                 cityArray.map { item in
+                     if item.id == self.userModel?.city_id {
+                         self.selectedCity = item
+                     }
+                 }
+                 
+                 countryArray.map { item in
+                     if item.id == self.userModel?.country_id {
+                         self.selectedCcountry = item
+                     }
+                 }
+                 state = .loaded(data: Model?.data)
+            }else {
+                state = .error(err ?? "")
+            }
+        }
+    }
+    
+    func updateProfile(urlEndPoint:EndPoints = .profile, methodType: HTTPMethodType = .post ,parameters : BaseParameters) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
+        
+        state = .loading(loading: .progress)
+        APIClient.shared.performRequestWithAlamofire(urlString: url,method: .post, parameters: parameters.toDictionary()) { [weak self] (Model: BaseModel<LoginData>? , err : String? )in
+            guard let self = self else { return }
+             if Model?.status == "success" {
+                 userModel = Model?.data
+                 AuthService.userData?.full_name = userModel?.full_name
+                 AuthService.userData?.email = userModel?.email
+                 AuthService.userData?.city_name = userModel?.city_name
+                 AuthService.userData?.city_id = userModel?.city_id
+                 AuthService.userData?.country_name = userModel?.country_name
+                 AuthService.userData?.country_id = userModel?.country_id
+                 AuthService.userData?.phone = userModel?.phone
+                 AuthService.userData?.avatar = userModel?.avatar
+                 
+                disMiss()
+            }else {
+                state = .error(err ?? "")
+            }
+        }
+    }
+    
+    func attachMents(urlEndPoint:EndPoints = .storeAttachMents,file: UIImage?, methodType: HTTPMethodType = .post ,parameters : BaseParameters) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
+        
+        state = .loading(loading: .progress)
+        APIClient.shared.uploadMultipartWithAlamofire(urlString: url,file: file, parameters: parameters.toDictionary()) { [weak self] (Model: BaseModel<LoginData>? , err : String? )in
+            guard let self = self else { return }
+             if Model?.status == "success" {
+                 self.getProfile()
+            }else {
+                state = .error(err ?? "")
+            }
+        }
+    }
+    
+    func fetchCountries(urlEndPoint:EndPoints = .countries, methodType: HTTPMethodType = .get) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
+        
+        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<[CountryData]>? , err : String? )in
+            guard let self = self else { return }
+             if Model?.status == "success" {
+                self.countryArray = Model?.data ?? []
+             }else {
+                 state = .error(err ?? "")
+             }
+        }
+    }
+    
+    func fetchCities(urlEndPoint:EndPoints = .cities, methodType: HTTPMethodType = .get) {
+        let url = "\(hostName)\(urlEndPoint.rawValue)"
+        
+        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<[CityData]>? , err : String? )in
+            guard let self = self else { return }
+             if Model?.status == "success" {
+                self.cityArray = Model?.data ?? []
+             }else {
+                 state = .error(err ?? "")
+             }
+        }
+    }
+    
+   
 }
 
 

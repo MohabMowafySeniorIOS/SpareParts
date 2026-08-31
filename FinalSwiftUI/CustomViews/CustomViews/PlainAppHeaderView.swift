@@ -2,7 +2,7 @@
 //  PlainAppHeaderView.swift
 //  MyAuctions
 //
-//  Created by Moaaz on 08/07/2025.
+//  Created by Mohab on 08/07/2025.
 //
 import SwiftUI
 
@@ -14,11 +14,11 @@ struct PlainAppHeaderView: View {
     var body: some View {
         HStack {
             Text(title.localized)
-                .foregroundStyle(.cWhite)
+                .foregroundStyle(Color.CWhite)
                 .font(.system(size: 20))
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(.main)
+        .background(Color.MainColor)
     }
 }
