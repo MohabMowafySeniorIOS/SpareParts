@@ -175,7 +175,7 @@ struct Target: Codable {
     // Trader
     let userID: Int?
     let tradeName: String?
-    let logo: flagModel?
+    let logo: targetLogoModel?
     let phone: String?
     let whatsapp: String?
     let ratingAvg: Double?
@@ -197,6 +197,25 @@ struct Target: Codable {
        
         case country = "country"
         case city = "city"
+    }
+}
+
+struct targetLogoModel: Codable {
+    let id: String?
+    let is_single: Bool?
+    let model_id: String?
+    let model_type: String?
+    let option: String?
+    let path: String?
+    let type: String?
+    enum CodingKeys: String, CodingKey {
+        case id
+        case is_single = "is_single"
+        case model_id = "model_id"
+        case model_type = "model_type"
+        case option = "option"
+      case path = "path"
+        case type = "type"
     }
 }
 

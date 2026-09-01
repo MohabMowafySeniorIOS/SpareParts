@@ -65,7 +65,7 @@ struct OrderDetailsView: View {
                 
                 OrderInfoSection(data: data, canChat: data.can_chat == true, onClic: {
                     if data.hasChat == true {
-                        viewModel.coordinator.showChatView(roomId: "\(data.chatID ?? 0)")
+                        viewModel.coordinator.showChatView(roomId: "\(data.chatID ?? 0)", title: "\(data.trader?.tradeName ?? "")-\(data.orderNumber ?? "")")
                     }else {
                         var param = BaseParameters()
                         param.order_id = "\(data.id ?? 0)"
