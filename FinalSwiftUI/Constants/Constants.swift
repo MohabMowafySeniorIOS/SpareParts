@@ -1,3 +1,4 @@
+
 //
 //  Constants.swift
 //  FinalSwiftUI
@@ -7,7 +8,7 @@
 
 import Foundation
 import SwiftUI
-let Google_Key = "AIzaSyB5zOHgZy-v918XuCMJvoEdujjFZx5sZ28"
+let Google_Key = "AIzaSyAS6rZi6-fUT5bkkVNorjfjDXi3gUNlNLU"
 let appName = (Bundle.main.infoDictionary!["CFBundleName"] as? String) ?? ""
 
 let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String

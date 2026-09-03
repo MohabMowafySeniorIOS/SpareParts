@@ -69,6 +69,18 @@
 /* ============================= */
 /* Addresses Screen */
 /* ============================= */
+/* Address picker */
+"automatic_gps"                         = "تحديد موقعي تلقائيًا";
+"selected_location"                     = "الموقع المحدد";
+"move_map_to_select"                    = "حرّك الخريطة لتحديد الموقع";
+"address_description_hint"              = "مثال: الدور الثالث، شقة 5، بجوار الصيدلية";
+"no_search_results"                     = "لا توجد نتائج مطابقة";
+"loading"                               = "جاري التحميل...";
+"location_permission_denied"            = "خدمة الموقع غير مفعّلة. فعّلها من الإعدادات لتحديد موقعك تلقائيًا.";
+"open_settings"                         = "فتح الإعدادات";
+
+"Additional description of the title"       = "وصف إضافي للعنوان";
+"Search About Address"      = "ابحث عن العنوان";
 "address_agenda"            = "عناويني";
 "add_address"               = "أضف عنوان";
 "added_addresses_menu"      = "قائمة العناوين المضافة";

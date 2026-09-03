@@ -8,6 +8,16 @@
 /* ============================= */
 /* Addresses Screen */
 /* ============================= */
+/* Address picker */
+"automatic_gps"                         = "Use my location";
+"selected_location"                     = "Selected location";
+"move_map_to_select"                    = "Move the map to pick a location";
+"address_description_hint"              = "e.g. 3rd floor, apartment 5, next to the pharmacy";
+"no_search_results"                     = "No matching results";
+"loading"                               = "Loading...";
+"location_permission_denied"            = "Location services are off. Enable them in Settings to use your current location.";
+"open_settings"                         = "Open Settings";
+
 "address_agenda"            = "My Addresses";
 "add_address"               = "Add Address";
 "added_addresses_menu"      = "List Of Added Addresses";
