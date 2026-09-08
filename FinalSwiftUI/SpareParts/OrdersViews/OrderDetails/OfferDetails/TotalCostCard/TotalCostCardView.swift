@@ -12,7 +12,7 @@ struct TotalCostCardView: View {
         HStack(){
             VStack(alignment: .leading,spacing: 10){
                
-                Text("Price (incl. tax)".localized)
+                Text("Total Price (incl. tax)".localized)
                     .foregroundStyle(Color.MainColor)
                     .font(addFont(fontType: .Medium, size: 18))
                 

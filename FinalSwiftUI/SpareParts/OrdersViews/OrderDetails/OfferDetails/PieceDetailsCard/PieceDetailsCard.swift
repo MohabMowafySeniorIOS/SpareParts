@@ -28,7 +28,7 @@ struct PieceDetailsCard: View {
                     .foregroundStyle(Color.MainColor)
                     .font(addFont(fontType: .Medium, size: 18))
                 
-                Text("Total Price".localized)
+                Text("Unit Price".localized)
                     .foregroundStyle(Color.MainColor)
                     .font(addFont(fontType: .Medium, size: 18))
                 

@@ -82,11 +82,11 @@ class VendorListViewModel: ObservableObject {
         }
         
         if latitude != "" {
-//            if filterObject.isBest == true {
-//                orderBy = "nearest"
-//            }else {
-//                orderBy = "nearest"
-//            }
+            if filterObject.isBest == true {
+                orderBy = "nearest"
+            }else {
+                orderBy = "nearest"
+            }
            
         }
         

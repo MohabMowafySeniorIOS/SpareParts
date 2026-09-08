@@ -559,7 +559,7 @@
 "Show Ratings List"                 = "عرض قائمة التقيمات";
 "Vendor Details"                    = "تفاصيل التاجر";
 "About Vendor"                      = "نبذه عن التاجر";
-"distance_between_vendor_customer"  =    "المسافة بين التاجر وموقع العميل";
+"distance_between_vendor_customer"  =    "المسافة بينك وبين التاجر";
 "Show Location"                     = "عرض الموقع";
 "Vendors List"                      = "قائمة التجار";
 "My Orders"                         = "طلباتي";
@@ -631,8 +631,8 @@
 "Piece Number"                                    = "رقم القطعة";
 "Piece Type"                                    = "نوع القطعة";
 "Count"                                         = "العدد";
-"Price (incl. tax)"                             = "السعر ( شامل الضريبة )";
-"Total Price"                                   = "إجمالي السعر";
+"Total Price (incl. tax)"                             = "اجمالي السعر (شامل الضريبة)";
+"Unit Price"                                   = "سعر الوحدة";
 "Charge Price"                                  = "سعر الشحن";
 "Total Cost"                                    = "إجمالي التكلفة";
 "Accept Offer"                                  = "قبول العرض"; 

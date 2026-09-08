@@ -79,8 +79,7 @@ struct PaymentMethodsView: View {
     }
     
     private var paymnetButton: some View {
-        
-        Button("Continue".localized) {
+        ContentButtonView(title: "Continue".localized) {
             if vm.selectedGateway.id == "1" {
                 vm.checkOut(paramter: .init(payment_method: "moyasar", brand: "visa"))
             }else {
@@ -92,10 +91,8 @@ struct PaymentMethodsView: View {
                 }
                
             }
-            
         }
-        .buttonStyle(.borderedProminent)
-       // .disabled(!vm.canContinue)
+      
     }
     
    private var walletBalance: some View {

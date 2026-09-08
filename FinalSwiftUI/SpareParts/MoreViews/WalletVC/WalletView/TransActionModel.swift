@@ -124,6 +124,7 @@ struct TransactionItem: Codable,Equatable, Hashable {
     let account_number : String?
     let iban : String?
     let transfer_image: String?
+    let order_number: String?
     
     enum CodingKeys: String, CodingKey {
 
@@ -146,6 +147,7 @@ struct TransactionItem: Codable,Equatable, Hashable {
         case iban = "iban"
         case transfer_image = "transfer_image"
         case status_label = "status_label"
+        case order_number = "order_number"
     }
 
    

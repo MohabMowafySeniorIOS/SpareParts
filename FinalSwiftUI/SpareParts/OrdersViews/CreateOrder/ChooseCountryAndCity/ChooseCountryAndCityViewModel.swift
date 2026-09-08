@@ -38,16 +38,39 @@ class ChooseCountryAndCityViewModel: ObservableObject {
         }
     }
     
-    func fetchCities(urlEndPoint:EndPoints = .cities, methodType: HTTPMethodType = .get, countryId: Int) {
+    func fetchCities(
+        urlEndPoint: EndPoints = .cities,
+        methodType: HTTPMethodType = .get,
+        countryId: Int,
+        selectedCityIDs: Set<Int> = []
+    ) {
         let url = "\(hostName)\(urlEndPoint.rawValue)?country_id=\(countryId)"
         
-        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<[CityData]>? , err : String? )in
+        APIClient.shared.performRequestWithAlamofire(
+            urlString: url,
+            method: methodType,
+            parameters: nil
+        ) { [weak self] (Model: BaseModel<[CityData]>?, err: String?) in
+            
             guard let self = self else { return }
-             if Model?.status == "success" {
-                self.cityArray = Model?.data ?? []
-             }else {
-                 state = .error(err ?? "")
-             }
+            
+            if Model?.status == "success" {
+                
+                self.cityArray = (Model?.data ?? []).map { city in
+                    var city = city
+                    
+                    if let cityID = city.id {
+                        city.isSelected = selectedCityIDs.contains(cityID)
+                    } else {
+                        city.isSelected = false
+                    }
+                    
+                    return city
+                }
+                
+            } else {
+                self.state = .error(err ?? "")
+            }
         }
     }
     
