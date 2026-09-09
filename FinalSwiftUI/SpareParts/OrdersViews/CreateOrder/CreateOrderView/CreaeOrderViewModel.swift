@@ -64,6 +64,7 @@ class CreateOrderViewModel: ObservableObject {
             }
         }
        
+        print(dict)
        
         APIClient.shared.uploadMultipartWithAlamofire(urlString: url,parameters: dict) { [weak self] (Model: BaseModel<CreateOrderModel>? , err : String? )in
             guard let self = self else { return }

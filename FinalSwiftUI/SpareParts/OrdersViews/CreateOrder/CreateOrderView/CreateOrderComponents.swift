@@ -190,7 +190,7 @@ struct PartsList: View {
     @Binding var selectedPartIndex: Int?
     
     var addPartAction: (()-> Void)
-    var showImages: (()-> Void)
+    var showImages: ((Int)-> Void)
     var body: some View {
         VStack(alignment: .trailing) {
             HStack{
@@ -211,7 +211,7 @@ struct PartsList: View {
                     ForEach(parts.indices, id: \.self) { idx in
                         PartCard(part: parts[idx], id: idx + 1)
                         {
-                            showImages()
+                            showImages(idx)
                         } deletePiece: {
                             parts.remove(at: idx)
                         }.onTapGesture {

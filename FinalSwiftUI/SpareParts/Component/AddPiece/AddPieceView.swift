@@ -28,10 +28,12 @@ struct AddPieceView: View {
     @State private var requiredPieceTypeText: String = "new (original)".localized
     @State private var descriptionText: String = ""
     @State private var isDescribtionFieldValid: Bool = true
+    @State private var uploadSessionID: UUID = UUID()
     
     @ObservedObject private var viewModel: AddPieceViewModel
     
     init(viewModel: AddPieceViewModel, partsPiece: Binding<[PartModel]>,selectedPartIndex:Binding<Int?>) {
+        
         self._viewModel = ObservedObject(wrappedValue: viewModel)
         self._partsPiece = partsPiece
         self._selectedPartIndex = selectedPartIndex
@@ -45,12 +47,21 @@ struct AddPieceView: View {
         mainContent
             .navigationBarHidden(true)
             .onAppear {
-                if let selectedPartIndex = self.selectedPartIndex {
+                // Create a unique session for this AddPiece screen.
+                // Uploads from a previously opened piece can never affect this piece.
+                // Start a fresh upload session for this screen first.
+                // Do not pass the existing images through a ternary/flatMap here
+                // because Swift can infer the result as [Any] for some PartModel definitions.
+                uploadSessionID = viewModel.startNewUploadSession()
+                
+                if let selectedPartIndex = self.selectedPartIndex,
+                   self.partsPiece.indices.contains(selectedPartIndex) {
+                    // Restore only this piece's images.
+                    viewModel.pickedImages = self.partsPiece[selectedPartIndex].uploadPickedImages
                     print(selectedPartIndex,partsPiece)
                     self.pieceNameFieldText = self.partsPiece[selectedPartIndex].name
                     self.pieceNumFieldText = self.partsPiece[selectedPartIndex].number.toEnglishDigits()
                     self.pieceCountFieldText = self.partsPiece[selectedPartIndex].quantity.toEnglishDigits()
-                    viewModel.pickedImages = self.partsPiece[selectedPartIndex].uploadPickedImages
                     if self.partsPiece[selectedPartIndex].type == "new_original" {
                         self.requiredPieceType = .original
                         self.requiredPieceTypeText = "new (original)".localized
@@ -92,8 +103,9 @@ struct AddPieceView: View {
                 let maxImages = 4
                 if viewModel.pickedImages.count < maxImages {
                     
+                    let sessionID = uploadSessionID
                     Task {
-                        await uploadAllImages(images: image)
+                        await uploadAllImages(images: image, sessionID: sessionID)
                     }
                     
                 }
@@ -101,12 +113,16 @@ struct AddPieceView: View {
         }
     }
     
-    func uploadAllImages(images: [UIImage]) async {
+    func uploadAllImages(images: [UIImage], sessionID: UUID) async {
         await withTaskGroup(of: Void.self) { group in
             
             for image in images {
                 group.addTask {
-                    await self.viewModel.attachMents(file: image, parameters: .init(media_type:"image",model: "OrderItem",option: "order_item_images",is_single: "0"))
+                    await self.viewModel.attachMents(
+                        file: image,
+                        parameters: .init(media_type: "image", model: "OrderItem", option: "order_item_images", is_single: "0"),
+                        sessionID: sessionID
+                    )
                 }
             }
             
@@ -237,7 +253,9 @@ struct AddPieceView: View {
     
     @ViewBuilder
     private var addPieceButton: some View {
+        
         SimpleSpareButton(buttonTitle: "add_piece".localized, action: {
+            print(viewModel.pickedImages, "------>" , partsPiece)
             if isValid(){
                 if let selectedPartIndex = selectedPartIndex  {
                     print(requiredPieceTypeText)

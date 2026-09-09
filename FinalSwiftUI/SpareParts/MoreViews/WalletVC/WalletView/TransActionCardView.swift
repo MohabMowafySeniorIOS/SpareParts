@@ -34,7 +34,10 @@ struct WalletBlockItem: View {
                 VStack(alignment:.leading,spacing:10){
                     WalletCardItem(title: "reference_number", value: "\(item?.id ?? 0)")
                     WalletCardItem(title: "transaction_type", value: item?.status_label ?? "")
-                    WalletCardItem(title: "Order Number", value: item?.order_number ?? "")
+                   if (item?.order_number?.count ?? 0) > 0 {
+                       WalletCardItem(title: "Order Number", value: item?.order_number ?? "")
+                    }
+                   
                 }
 
                 Spacer(minLength: 16)

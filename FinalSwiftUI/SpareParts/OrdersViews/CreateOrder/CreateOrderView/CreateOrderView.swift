@@ -59,8 +59,18 @@ struct CreateOrderView: View {
             Color(Color.backGroundColor)
         )
         .overlay {
-            let allImages = viewModel.partsPiece.compactMap { $0.uploadPickedImages }.flatMap { $0 }
-            ItemsImagesViewPopup(isPresented: $showImages, images: allImages)
+            let selectedImages: [AttachMentModel?] = {
+                guard let index = viewModel.selectedPartIndex,
+                      viewModel.partsPiece.indices.contains(index) else {
+                    return []
+                }
+                return viewModel.partsPiece[index].uploadPickedImages
+            }()
+
+            ItemsImagesViewPopup(
+                isPresented: $showImages,
+                images: selectedImages
+            )
         }
         .background(
             Color(Color.backGroundColor)
@@ -201,8 +211,8 @@ struct CreateOrderView: View {
     private var addPartsView: some View {
         PartsList(parts: $viewModel.partsPiece,selectedPartIndex:$viewModel.selectedPartIndex) {
             goNext = true
-        } showImages:
-        {
+        } showImages: { index in
+            viewModel.selectedPartIndex = index
             showImages = true
         }
     }
