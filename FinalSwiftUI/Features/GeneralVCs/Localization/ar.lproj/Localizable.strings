@@ -5,7 +5,25 @@
 //  Created by Mohab Elsayed on 27/12/2024.
 //
 
-
+/* ============================= */
+/* القائمة الجانبية (Side Menu) */
+/* ============================= */
+"menu"                    = "القائمة";
+"menu_messages"           = "الرسائل";
+"menu_settings"           = "الإعدادات";
+"menu_faq"                = "الأسئلة الشائعة";
+"menu_about_us"           = "من نحن";
+"menu_privacy"            = "سياسة الخصوصية";
+"menu_terms"              = "الشروط والأحكام";
+"menu_cancellation"       = "سياسة الإلغاء";
+"menu_contact"            = "اتصل بنا";
+"menu_share"              = "مشاركة التطبيق";
+"menu_rate"               = "تقييم التطبيق";
+"menu_logout"             = "تسجيل الخروج";
+"menu_delete_account"     = "حذف الحساب";
+"menu_app_version"        = "إصدار التطبيق";
+"menu_filter"             = "فلتر القائمة";
+"Filter"                  = "فلتر";
 //Order Details
 "Choose Payment Method"     = "اختر طريقة الدفع";
 "Forget Password" = "استعادة كلمة المرور";
@@ -177,25 +195,7 @@
 "register_submit_button"  = "تسجيل الحساب";
 "Choose City"             = "اختر المدينة";
 
-/* ============================= */
-/* القائمة الجانبية (Side Menu) */
-/* ============================= */
-"menu"                    = "القائمة";
-"menu_messages"           = "الرسائل";
-"menu_settings"           = "الإعدادات";
-"menu_faq"                = "الأسئلة الشائعة";
-"menu_about_us"           = "من نحن";
-"menu_privacy"            = "سياسة الخصوصية";
-"menu_terms"              = "الشروط والأحكام";
-"menu_cancellation"       = "سياسة الإلغاء";
-"menu_contact"            = "اتصل بنا";
-"menu_share"              = "مشاركة التطبيق";
-"menu_rate"               = "تقييم التطبيق";
-"menu_logout"             = "تسجيل الخروج";
-"menu_delete_account"     = "حذف الحساب";
-"menu_app_version"        = "إصدار التطبيق";
-"menu_filter"             = "فلتر القائمة";
-"Filter"                  = "فلتر";
+
 /* ============================= */
 /* شاشة انتظار الإعلان */
 /* ============================= */
@@ -330,6 +330,7 @@
 "my_ads"                                 = "إعلاناتي";
 "ads"                                    = "إعلانات";
 "vendor"                                 = "التاجر";
+"Vendors"                                 = "التجار";
 "subscribed_auctions"                    = "المزادات المشترك بها";
 "id"                                     = "رقم المعرف";
 "ad_type"                                = "نوع الإعلان";

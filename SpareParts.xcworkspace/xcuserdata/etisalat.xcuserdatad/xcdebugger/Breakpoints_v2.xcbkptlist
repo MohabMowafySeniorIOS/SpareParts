@@ -7,38 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "78E16FB7-0938-4829-92F3-882F50713957"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FinalSwiftUI/SpareParts/Vendors/VendorsList/VendorListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
-            landmarkName = "getVendorsData()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "71D6B31A-E75D-43A0-8648-E3690EA53F5C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FinalSwiftUI/SpareParts/Vendors/VendorsList/VendorListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "getVendorsData()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "71C8F927-BD79-489A-87B7-18696B3FFF44"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -50,6 +18,52 @@
             endingLineNumber = "67"
             landmarkName = "CreateOrder(urlEndPoint:methodType:parameters:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DE4F34F7-B610-46B6-AC8E-3E3C3C0FB449"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FinalSwiftUI/SpareParts/Vendors/VendorsList/VendorListViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "getVendorsData()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "DE4F34F7-B610-46B6-AC8E-3E3C3C0FB449 - 1106cfbffc601e77"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;SpareParts.BaseModel&lt;SpareParts.TradersResponse&gt;&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; () in SpareParts.VendorListViewModel.getVendorsData() -&gt; ()"
+                  moduleName = "SpareParts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/etisalat/Desktop/Learn%20Sorce%20Control/HeadShotGit/SpareParts/FinalSwiftUI/SpareParts/Vendors/VendorsList/VendorListViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100">
+               </Location>
+               <Location
+                  uuid = "DE4F34F7-B610-46B6-AC8E-3E3C3C0FB449 - e7f3179e91016eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SpareParts.VendorListViewModel.getVendorsData() -&gt; ()"
+                  moduleName = "SpareParts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/etisalat/Desktop/Learn%20Sorce%20Control/HeadShotGit/SpareParts/FinalSwiftUI/SpareParts/Vendors/VendorsList/VendorListViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "99"
+                  endingLineNumber = "99">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

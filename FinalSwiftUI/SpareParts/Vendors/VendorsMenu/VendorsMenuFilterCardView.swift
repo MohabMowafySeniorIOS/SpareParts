@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+enum SortedType {
+    case newest
+    case nearest
+    case rating
+}
 
 struct VendorsMenuFilterCardView: View {
     @Binding var filterObject: FilterObject
     @Binding var isVendorMenu: Bool
-    @State var isNew: Bool?
-    @State var isFar: Bool?
-    @State var isBest: Bool?
+    @State var orderBy: SortedType?
+   
    
     var body: some View {
                 
@@ -26,9 +30,8 @@ struct VendorsMenuFilterCardView: View {
                     buttonSection
                 }
                 .onAppear {
-                    isNew = filterObject.isNew
-                    isFar = filterObject.isFar
-                    isBest = filterObject.isBest
+                    orderBy = filterObject.orderBy
+                   
                 }
                 .frame(maxHeight: .infinity)
                 .background(
@@ -40,24 +43,24 @@ struct VendorsMenuFilterCardView: View {
     private var newestView: some View {
         HStack{
             Text("oldest_to_newest".localized)
-                .foregroundStyle(isNew == true ? Color.CWhite : .gray)
+                .foregroundStyle(orderBy == .newest ? Color.CWhite : .gray)
                 .padding(5)
                 .padding(.horizontal,5)
-                .background(isNew == true ? Color.MainColor : .white)
+                .background(orderBy == .newest ? Color.MainColor : .white)
                 .cornerRadius(14)
                 .onTapGesture {
-                    isNew = true
+                    orderBy = .newest
                 }
             Spacer()
-            Text("newest_to_oldest".localized)
-                .foregroundStyle(isNew == false ? .white : .gray)
-                .padding(5)
-                .padding(.horizontal,5)
-                .background(isNew == false ? Color.MainColor : .white)
-                .cornerRadius(14)
-                .onTapGesture {
-                    isNew = false
-                }
+//            Text("newest_to_oldest".localized)
+//                .foregroundStyle(isNew == false ? .white : .gray)
+//                .padding(5)
+//                .padding(.horizontal,5)
+//                .background(isNew == false ? Color.MainColor : .white)
+//                .cornerRadius(14)
+//                .onTapGesture {
+//                    isNew = false
+//                }
             
             Spacer()
         }
@@ -67,77 +70,70 @@ struct VendorsMenuFilterCardView: View {
     private var locationView: some View {
         HStack{
             Text("farthest_to_nearest".localized)
-                .foregroundStyle(isFar == true ? .white : .gray)
+                .foregroundStyle(orderBy == .nearest ? .white : .gray)
                 .padding(5)
                 .padding(.horizontal,5)
-                .background(isFar == true ? Color.MainColor : .white)
+                .background(orderBy == .nearest ? Color.MainColor : .white)
                 .cornerRadius(14)
                 .onTapGesture {
-                    isFar = true
+                    orderBy = .nearest
                 }
             Spacer()
-            Text("nearest_to_farthest".localized)
-                .foregroundStyle(isFar == false ? .white : .gray)
-                .padding(5)
-                .padding(.horizontal,5)
-                .background(isFar == false ? Color.MainColor : .white)
-                .cornerRadius(14)
-                .onTapGesture {
-                    isFar = false
-                }
-            
+//            Text("nearest_to_farthest".localized)
+//                .foregroundStyle(isFar == false ? .white : .gray)
+//                .padding(5)
+//                .padding(.horizontal,5)
+//                .background(isFar == false ? Color.MainColor : .white)
+//                .cornerRadius(14)
+//                .onTapGesture {
+//                    isFar = false
+//                }
+//            
             Spacer()
         }
         .padding(.horizontal)
     }
     
     private var ratingView: some View {
-        VStack {
-            HStack{
-                Text("lowest_to_highest_price".localized)
-                    .foregroundStyle(isBest == true ? .white : .gray)
-                    .padding(5)
-                    .padding(.horizontal,5)
-                    .background(isBest == true ? Color.MainColor : .white)
-                    .cornerRadius(14)
-                    .onTapGesture {
-                        isBest = true
-                    }
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            HStack{
-                Text("highest_to_lowest_price".localized)
-                    .foregroundStyle(isBest == false ? .white : .gray)
-                    .padding(5)
-                    .padding(.horizontal,5)
-                    .background(isBest == false ? Color.MainColor : .white)
-                    .cornerRadius(14)
-                    .onTapGesture {
-                        isBest = false
-                    }
-                
-                Spacer()
-            }
-            .padding(.horizontal)
+        HStack{
+            Text("highest_to_lowest_price".localized)
+                .foregroundStyle(orderBy == .rating ? .white : .gray)
+                .padding(5)
+                .padding(.horizontal,5)
+                .background(orderBy == .rating ? Color.MainColor : .white)
+                .cornerRadius(14)
+                .onTapGesture {
+                    orderBy = .rating
+                }
+            Spacer()
+//            Text("nearest_to_farthest".localized)
+//                .foregroundStyle(isFar == false ? .white : .gray)
+//                .padding(5)
+//                .padding(.horizontal,5)
+//                .background(isFar == false ? Color.MainColor : .white)
+//                .cornerRadius(14)
+//                .onTapGesture {
+//                    isFar = false
+//                }
+//
+            Spacer()
         }
-    }
+        .padding(.horizontal)
+        
+       
+        }
+   
     
     private var buttonSection: some View {
         HStack{
             SimpleSpareButton(buttonTitle: "confirm".localized, action: {
-                filterObject.isNew = isNew
-                filterObject.isBest = isBest
-                filterObject.isFar = isFar
+                filterObject.orderBy = orderBy
+               
                 isVendorMenu = false
             }, widthValue: 160, heightValue: 30)
             
             SmallButtonWithBorder(action: {
-                filterObject.isNew = nil
-                filterObject.isBest = nil
-                filterObject.isFar = nil
+                filterObject.orderBy = nil
                 isVendorMenu = false
             }, title: "cancel".localized)
         }

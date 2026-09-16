@@ -20,27 +20,27 @@ class VendorListViewModel: ObservableObject {
     private var currentPage = 1
     @ObservedObject var coordinator: MainCoordinator
     private var cancellables = Set<AnyCancellable>()
-
+    
     init(coordinator: MainCoordinator, locationManager: LocationManager) {
         _coordinator = ObservedObject(wrappedValue: coordinator)
         self.locationManager = locationManager
         observeSearch()
     }
-   
-     func observeSearch() {
+    
+    func observeSearch() {
         $countryAndCities
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .sink { [weak self] value in
                 self?.getVendorsData()
             }
-           .store(in: &cancellables)
+            .store(in: &cancellables)
         
         $filterObject
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
             .sink { [weak self] value in
                 self?.getVendorsData()
             }
-           .store(in: &cancellables)
+            .store(in: &cancellables)
     }
     
     func openGoogleMaps(lat: Double, lng: Double) {
@@ -69,38 +69,34 @@ class VendorListViewModel: ObservableObject {
         }
         var latitude = ""
         var longtiude = ""
-        var rating = ""
         var orderBy = ""
         
         if let lat = locationManager.latitude,
            let lon = locationManager.longitude {
             latitude = "\(lat)"
             longtiude = "\(lon)"
-           
+            
         } else {
             print("Getting location...")
         }
         
-        if latitude != "" {
-            if filterObject.isBest == true {
-                orderBy = "nearest"
-            }else {
-                orderBy = "nearest"
-            }
-           
+        if filterObject.orderBy == .nearest {
+            orderBy = "nearest"
+       }
+       
+        
+        if filterObject.orderBy == .newest {
+            orderBy = "newest"
         }
         
-        if rating != "" {
-            if filterObject.isBest == true {
-                rating = "5"
-            }else {
-                rating = "0"
-            }
-            
-           // orderBy = "rating"
+        
+        
+        if filterObject.orderBy == .rating  {
+            orderBy = "rating"
         }
         
-        let url = "\(hostName)\(EndPoints.vendorsList.rawValue)?keyword=\(fieldText)&country_id=\(countryId)&city_id=\(cityId)&min_rating=\(rating)&order_by=\(orderBy)&latitude=\(latitude)&longitude=\(longtiude)"
+        let url = "\(hostName)\(EndPoints.vendorsList.rawValue)?keyword=\(fieldText)&country_id=\(countryId)&city_id=\(cityId)&order_by=\(orderBy)&latitude=\(latitude)&longitude=\(longtiude)"
+        print(url)
         state = .loading(loading: .progress)
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: .get, parameters:nil) { [weak self] (Model: BaseModel<TradersResponse>? , err : String? )in
             
@@ -123,7 +119,7 @@ class VendorListViewModel: ObservableObject {
     func handleFavourite(traderModel: Trader) {
         
         let url = "\(hostName)\(EndPoints.vendorDetails.rawValue)\(traderModel.id)/favorite"
-       
+        
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: .post, parameters: ["trader": "\(traderModel.id)"]) { [weak self] (Model: BaseModel<IsFavouriteModel>? , err : String? )in
             guard let self = self else { return }
             if Model?.status == "success" {

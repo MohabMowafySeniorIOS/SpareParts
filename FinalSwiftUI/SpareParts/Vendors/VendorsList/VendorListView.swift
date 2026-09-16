@@ -7,9 +7,8 @@
 import SwiftUI
 
 struct FilterObject {
-     var isNew: Bool?
-     var isFar: Bool?
-     var isBest: Bool?
+     var orderBy: SortedType?
+   
 }
 
 struct VendorListView: View {

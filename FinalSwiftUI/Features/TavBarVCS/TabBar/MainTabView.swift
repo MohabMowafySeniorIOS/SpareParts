@@ -24,7 +24,7 @@ struct MainTabView: View {
                 VendorListView(viewModel: VendorListViewModel(coordinator: coordinator, locationManager: LocationManager()), selectedTab: $selectedTab)
                     .tabItem {
                         Image.vendor
-                        Text("vendor".localized)
+                        Text("Vendors".localized)
                     }
                     .tag(3)
                 

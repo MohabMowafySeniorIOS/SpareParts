@@ -456,7 +456,7 @@
 "newest_to_oldest"                       = "Newest to Oldest";
 "farthest_to_nearest"                    = "Farthest to Nearest";
 "nearest_to_farthest"                    = "Nearest to Farthest";
-"lowest_to_highest_price"                = "Lowest to Highest Price";
+"lowest_to_highest_price"                = "Lowest to Highest Rating";
 "highest_to_lowest_price"                = "Highest to Lowest Price";
 "create_order"                           = "Create Order";
 "add_piece"                              = "Add Piece";
