@@ -118,7 +118,7 @@ struct OrderDetailsView: View {
                 
                 
                 
-                if data.canPay == true {
+                if (data.paymentMethod?.count ?? 0) > 0 {
                     TitleLabel(title: "payment details".localized)
                         .foregroundStyle(Color.SecondaryColor)
                         .padding(.horizontal)

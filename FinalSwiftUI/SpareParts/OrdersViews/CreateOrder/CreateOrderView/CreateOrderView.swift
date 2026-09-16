@@ -219,7 +219,7 @@ struct CreateOrderView: View {
     
     @ViewBuilder
     private var orderTypeView: some View {
-        DoubleHTitleLabel(head: "delivery_type".localized, tail: orderType)
+        DoubleHTitleLabel(head: "Order Type".localized, tail: orderType)
         if mainOrderType == .custom {
             dependOnView
             dependOnCityView

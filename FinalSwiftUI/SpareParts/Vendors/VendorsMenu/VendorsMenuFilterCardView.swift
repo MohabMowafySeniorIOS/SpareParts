@@ -135,7 +135,7 @@ struct VendorsMenuFilterCardView: View {
             SmallButtonWithBorder(action: {
                 filterObject.orderBy = nil
                 isVendorMenu = false
-            }, title: "cancel".localized)
+            }, title: "Reset".localized)
         }
         .padding(.horizontal)
         
