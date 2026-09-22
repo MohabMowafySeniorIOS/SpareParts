@@ -35,10 +35,17 @@ struct BaseModelWithPagination<T:Codable>: Codable {
     let data : T?
     let pagination : Pagination?
     let Links : Links?
+    let meta : Meta?
     enum CodingKeys: String, CodingKey {
         case data = "data"
         case pagination = "pagination"
         case Links = "Links"
+        case meta = "meta"
+    }
+    
+    /// آخر صفحة، سواء السيرفر رجعها في "pagination" أو في "meta"
+    var lastPage: Int? {
+        pagination?.lastPage ?? meta?.lastPage
     }
 }
 

@@ -180,6 +180,15 @@ struct WalletMainView: View {
 
                         }
                     )
+                    .onAppear {
+                        viewModel.loadMoreIfNeeded(currentIndex: index)
+                    }
+                }
+                
+                if viewModel.canLoadMore {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
                 }
             }
             .padding(.horizontal)

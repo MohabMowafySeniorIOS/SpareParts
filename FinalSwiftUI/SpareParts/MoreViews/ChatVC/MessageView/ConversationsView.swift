@@ -28,16 +28,28 @@ struct MessagesView: View {
     private var scrollView: some View {
         ShowViewState(state: viewModel.state) { Model in
             ScrollView {
-                VStack(spacing: 15) {
+                LazyVStack(spacing: 15) {
                    
                     ForEach(viewModel.rooms, id: \.id) { conversation in
-                        ConversationRow(conversation: conversation).onTapGesture {
-                            viewModel.coordinator.showChatView(roomId: "\(conversation.chatId ?? 0)", title: "\(conversation.other_party?.name ?? "")-\(conversation.order?.orderNumber ?? "")")
-                        }
+                        ConversationRow(conversation: conversation)
+                            .onTapGesture {
+                                viewModel.coordinator.showChatView(roomId: "\(conversation.chatId ?? 0)", title: "\(conversation.other_party?.name ?? "")-\(conversation.order?.orderNumber ?? "")")
+                            }
+                            .onAppear {
+                                viewModel.loadMoreIfNeeded(currentRoom: conversation)
+                            }
                     }
-                    Spacer()
+                    
+                    if viewModel.canLoadMore {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                    }
                 }
                 .padding(.top)
+            }
+            .refreshable {
+                viewModel.getChats()
             }
         }
         

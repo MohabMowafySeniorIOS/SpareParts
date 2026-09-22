@@ -96,6 +96,8 @@ struct Withdraw_request : Codable {
 // MARK: - TransactionsData
 struct TransactionsData: Codable {
     let data: [TransactionItem]?
+    let links: Links?
+    let meta: Meta?
 }
 
 struct WithDrawDataModel: Codable {

@@ -16,6 +16,13 @@ class WalletViewModel: ObservableObject {
     @Published var state: viewState<[TransactionItem]?> = .idle
     @Published var chargeState: viewState<WalletChargeData?> = .idle
     
+    @Published var canLoadMore: Bool = false
+    private var currentPage = 1
+    private var isFetching = false
+    private var requestID = UUID()
+    /// بيبني الـ URL للتاب المفتوح حاليًا حسب رقم الصفحة
+    private var currentURLBuilder: ((Int) -> String)?
+    
     @ObservedObject var coordinator: MainCoordinator
     init(coordinator: MainCoordinator){
         _coordinator = ObservedObject(wrappedValue: coordinator)
@@ -28,62 +35,91 @@ class WalletViewModel: ObservableObject {
     }
     
     func getAdditions(urlEndPoint:EndPoints = .WalletChanges, methodType: HTTPMethodType = .get,page:String) {
-        var urlEndPoint = urlEndPoint
-        var url = "\(hostName)\(urlEndPoint.rawValue)?page=\(page)"
-        
-        
-        state = .loading(loading: .progress)
-        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<TransactionsData>? , err : String? )in
-            guard let self = self else { return }
-             if Model?.status == "success" {
-                walletModel = Model?.data?.data ?? []
-                 state = .loaded(data: Model?.data?.data ?? [])
-            }else {
-                state = .error(err ?? "")
-            }
+        startPaging(from: page, methodType: methodType) { page in
+            "\(hostName)\(urlEndPoint.rawValue)?page=\(page)"
         }
     }
-    
     
     func getTransActions(urlEndPoint:EndPoints = .WalletTransAction, methodType: HTTPMethodType = .get  ,type:String,page:String) {
-        var urlEndPoint = urlEndPoint
-        var url = "\(hostName)\(urlEndPoint.rawValue)?type=\(type)&page=\(page)"
-        if type == "" {
-            urlEndPoint = .WalletWithDrawRequest
-            url = "\(hostName)\(urlEndPoint.rawValue)?page=\(page)"
-        }
-        
-        state = .loading(loading: .progress)
-        APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<TransactionsData>? , err : String? )in
-            guard let self = self else { return }
-             if Model?.status == "success" {
-                walletModel = Model?.data?.data ?? []
-                 state = .loaded(data: Model?.data?.data ?? [])
-            }else {
-                state = .error(err ?? "")
+        startPaging(from: page, methodType: methodType) { page in
+            if type == "" {
+                return "\(hostName)\(EndPoints.WalletWithDrawRequest.rawValue)?page=\(page)"
             }
+            return "\(hostName)\(urlEndPoint.rawValue)?type=\(type)&page=\(page)"
         }
     }
     
-    
-    
     func getWithDraw(urlEndPoint:EndPoints = .WalletWithDrawRequest, methodType: HTTPMethodType = .get ,page:String) {
-        let url = "\(hostName)\(urlEndPoint.rawValue)?page=\(page)"
-        state = .loading(loading: .progress)
+        startPaging(from: page, methodType: methodType) { page in
+            "\(hostName)\(urlEndPoint.rawValue)?page=\(page)"
+        }
+    }
+    
+    /// بتتنادى من الـ onAppear بتاع كل عنصر، ولما نوصل لآخر عنصر نجيب الصفحة اللي بعدها
+    func loadMoreIfNeeded(currentIndex: Int) {
+        guard currentIndex == walletModel.count - 1,
+              canLoadMore,
+              !isFetching else { return }
+        fetchTransactions()
+    }
+    
+    /// أي تاب بيتفتح بيبدأ من الصفحة اللي اتبعتت (عادةً "1")
+    private func startPaging(from page: String, methodType: HTTPMethodType, urlBuilder: @escaping (Int) -> String) {
+        currentURLBuilder = urlBuilder
+        currentPage = Int(page) ?? 1
+        canLoadMore = false
+        isFetching = false
+        if currentPage == 1 {
+            walletModel = []
+        }
+        fetchTransactions(methodType: methodType)
+    }
+    
+    private func fetchTransactions(methodType: HTTPMethodType = .get) {
+        guard let urlBuilder = currentURLBuilder else { return }
+        let page = currentPage
+        let url = urlBuilder(page)
+        
+        isFetching = true
+        let thisRequest = UUID()
+        requestID = thisRequest
+        if page == 1 {
+            state = .loading(loading: .progress)
+        }
+        
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<TransactionsData>? , err : String? )in
             guard let self = self else { return }
-             if Model?.status == "success" {
-                 walletModel = Model?.data?.data ?? []
-                 state = .loaded(data: self.state.data)
-            }else {
-                state = .error(err ?? "")
+            // لو المستخدم غيّر التاب والريكوست ده قديم، تجاهله
+            guard thisRequest == self.requestID else { return }
+            self.isFetching = false
+            
+            if Model?.status == "success" {
+                let newItems = Model?.data?.data ?? []
+                if page == 1 {
+                    self.walletModel = newItems
+                } else {
+                    self.walletModel.append(contentsOf: newItems)
+                }
+                
+                // لو السيرفر مش راجع meta بنعتبرها صفحة واحدة
+                let lastPage = Model?.data?.meta?.lastPage ?? page
+                if page < lastPage {
+                    self.currentPage = page + 1
+                    self.canLoadMore = true
+                } else {
+                    self.canLoadMore = false
+                }
+                
+                self.state = .loaded(data: self.walletModel)
+            } else if page == 1 {
+                self.state = .error(err ?? "")
             }
+            // لو فشلت صفحة غير الأولى بنسيب الداتا اللي ظاهرة زي ما هي
         }
     }
     
     func getBalance(urlEndPoint:EndPoints = .WalletBalanace, methodType: HTTPMethodType = .get ) {
         let url = "\(hostName)\(urlEndPoint.rawValue)"
-        state = .loading(loading: .progress)
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<BalanceData>? , err : String? )in
             guard let self = self else { return }
              if Model?.status == "success" {

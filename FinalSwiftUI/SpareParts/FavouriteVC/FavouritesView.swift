@@ -40,6 +40,11 @@ struct FavouritsView: View {
                 viewModel.coordinator.vendorDetails(rating: vendor.ratingAvg ?? 0.0, vendorId: "\(vendor.id)")
             }, favouriteAction: {vendor in
                 viewModel.handleFavourite(traderModel: vendor)
+            }, onItemAppear: { vendor in
+                viewModel.loadMoreIfNeeded(currentTrader: vendor)
+            }, showLoadMoreIndicator: viewModel.canLoadMore,
+               onRefresh: {
+                viewModel.getFavourite()
             })
     }
    

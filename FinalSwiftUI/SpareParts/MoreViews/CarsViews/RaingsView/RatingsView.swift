@@ -40,12 +40,24 @@ struct RatingsView: View {
     
     private var ratingView: some View {
         ScrollView {
-            VStack(spacing: 8) {
+            LazyVStack(spacing: 8) {
                 ForEach(viewModel.ratings ?? [], id: \.id) { item in
                     RatingSingleCardView(card: item)
+                        .onAppear {
+                            viewModel.loadMoreIfNeeded(currentItem: item)
+                        }
+                }
+                
+                if viewModel.canLoadMore {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
                 }
             }
            
+        }
+        .refreshable {
+            viewModel.refresh()
         }
     }
 }

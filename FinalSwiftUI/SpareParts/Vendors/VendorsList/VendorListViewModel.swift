@@ -18,6 +18,8 @@ class VendorListViewModel: ObservableObject {
     @Published var state: viewState<BaseModel<String>> = .idle
     var canLoadMore: Bool = false
     private var currentPage = 1
+    private var isFetching = false
+    private var requestID = UUID()
     @ObservedObject var coordinator: MainCoordinator
     private var cancellables = Set<AnyCancellable>()
     
@@ -27,20 +29,33 @@ class VendorListViewModel: ObservableObject {
         observeSearch()
     }
     
+    /// بيتعمل subscribe مرة واحدة بس (من الـ init)
+    /// أي تغيير في الفلتر أو الدولة/المدينة يرجّع الليستة من أول صفحة
     func observeSearch() {
-        $countryAndCities
+        guard cancellables.isEmpty else { return }
+        Publishers.CombineLatest($countryAndCities, $filterObject)
             .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-            .sink { [weak self] value in
-                self?.getVendorsData()
+            .sink { [weak self] _, _ in
+                self?.refresh()
             }
             .store(in: &cancellables)
-        
-        $filterObject
-            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-            .sink { [weak self] value in
-                self?.getVendorsData()
-            }
-            .store(in: &cancellables)
+    }
+    
+    /// يبدأ من أول صفحة (سيرش / فلتر / pull to refresh)
+    func refresh() {
+        currentPage = 1
+        canLoadMore = false
+        isFetching = false
+        getVendorsData()
+    }
+    
+    /// بتتنادى من الـ onAppear بتاع كل كارت، ولما نوصل لآخر عنصر نجيب الصفحة اللي بعدها
+    func loadMoreIfNeeded(currentVendor: Trader) {
+        guard let last = vendorData.last,
+              currentVendor.id == last.id,
+              canLoadMore,
+              !isFetching else { return }
+        getVendorsData()
     }
     
     func openGoogleMaps(lat: Double, lng: Double) {
@@ -95,24 +110,46 @@ class VendorListViewModel: ObservableObject {
             orderBy = "rating"
         }
         
-        let url = "\(hostName)\(EndPoints.vendorsList.rawValue)?keyword=\(fieldText)&country_id=\(countryId)&city_id=\(cityId)&order_by=\(orderBy)&latitude=\(latitude)&longitude=\(longtiude)"
+        let keyword = fieldText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let page = currentPage
+        let url = "\(hostName)\(EndPoints.vendorsList.rawValue)?keyword=\(keyword)&country_id=\(countryId)&city_id=\(cityId)&order_by=\(orderBy)&latitude=\(latitude)&longitude=\(longtiude)&page=\(page)"
         print(url)
-        state = .loading(loading: .progress)
+        
+        isFetching = true
+        let thisRequest = UUID()
+        requestID = thisRequest
+        if page == 1 {
+            state = .loading(loading: .progress)
+        }
+        
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: .get, parameters:nil) { [weak self] (Model: BaseModel<TradersResponse>? , err : String? )in
             
             guard let self = self else { return }
+            // لو حصل refresh والريكوست ده قديم، تجاهله
+            guard thisRequest == self.requestID else { return }
+            self.isFetching = false
+            
             if Model?.status == "success" {
-                vendorData = Model?.data?.data ?? []
-                if vendorData.count > 0 {
-                    state = .loaded(data: nil)
-                }else {
-                    state = .emptyScreen
+                let newVendors = Model?.data?.data ?? []
+                if page == 1 {
+                    self.vendorData = newVendors
+                } else {
+                    self.vendorData.append(contentsOf: newVendors)
                 }
                 
-            } else {
-                state = .error(err ?? "")
+                let lastPage = Model?.data?.meta?.lastPage ?? page
+                if page < lastPage {
+                    self.currentPage = page + 1
+                    self.canLoadMore = true
+                } else {
+                    self.canLoadMore = false
+                }
+                
+                self.state = self.vendorData.isEmpty ? .emptyScreen : .loaded(data: nil)
+            } else if page == 1 {
+                self.state = .error(err ?? "")
             }
-            
+            // لو فشلت صفحة غير الأولى بنسيب الداتا اللي ظاهرة زي ما هي
         }
     }
     

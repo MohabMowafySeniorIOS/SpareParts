@@ -9,15 +9,16 @@ import SwiftUI
 struct VendorListOrderView: View {
     @State var goToCountryAndCity: Bool = false
     @Environment(\.dismiss) var dismiss
-    @State private var fieldText: String = ""
     @State var isVendorMenu: Bool = false
     @Binding var vendorDetails: Trader?
-    @ObservedObject private var viewModel: VendorListOrderViewModel
+    @StateObject private var viewModel: VendorListOrderViewModel
     @State var isNew: Bool?
     @State var isFar: Bool?
     @State var isBest: Bool?
-    init(viewModel: VendorListOrderViewModel,vendorDetails: Binding<Trader?>) {
-        _viewModel = ObservedObject(wrappedValue: viewModel)
+    // @autoclosure + @StateObject: الـ ViewModel بيتعمل مرة واحدة بس
+    // فالصفحات اللي اتحملت ما تضيعش لو الشاشة اللي قبلها عملت re-render
+    init(viewModel: @autoclosure @escaping () -> VendorListOrderViewModel, vendorDetails: Binding<Trader?>) {
+        _viewModel = StateObject(wrappedValue: viewModel())
         self._vendorDetails = vendorDetails
     }
     var body: some View {
@@ -45,8 +46,8 @@ struct VendorListOrderView: View {
     }
     
     private var searchView: some View {
-        HomeSearchBar(searchFieldText: $fieldText, searchAction: {
-            
+        HomeSearchBar(searchFieldText: $viewModel.fieldText, searchAction: {
+            viewModel.refresh()
         })
         .padding(.horizontal)
     }
@@ -79,8 +80,8 @@ struct VendorListOrderView: View {
     private var vendorList: some View {
         ScrollView(showsIndicators: false){
             LazyVStack(spacing: 16) {
-                    ForEach(viewModel.vendorData?.data ?? []){ vendor in
-                        VendorCardWithLocation(vendor: vendor, orderNow: {
+                ForEach(viewModel.vendorData) { vendor in
+                    VendorCardWithLocation(vendor: vendor, orderNow: {
                         vendorDetails = vendor
                         dismiss()
                     }, openLocation: {
@@ -88,9 +89,20 @@ struct VendorListOrderView: View {
                     }, pressFavourite: {
                         viewModel.handleFavourite(traderModel: vendor)
                     })
+                    .onAppear {
+                        viewModel.loadMoreIfNeeded(currentVendor: vendor)
+                    }
                 }
-
+                
+                if viewModel.canLoadMore {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                }
             }
+        }
+        .refreshable {
+            viewModel.refresh()
         }
         .padding(.top)
         .padding(.horizontal, 16)

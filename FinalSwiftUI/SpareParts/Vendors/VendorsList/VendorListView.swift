@@ -28,9 +28,6 @@ struct VendorListView: View {
     }
     var body: some View {
         mainContent
-            .onAppear {
-                viewModel.observeSearch()
-            }
             .overlay {
                 
                 if showLoginPopup {
@@ -77,7 +74,7 @@ struct VendorListView: View {
     
     private var searchView: some View {
         HomeSearchBar(searchFieldText: $viewModel.fieldText, searchAction: {
-            viewModel.observeSearch()
+            viewModel.refresh()
         })
         .padding(.horizontal)
     }
@@ -110,8 +107,7 @@ struct VendorListView: View {
     private var vendorList: some View {
         ScrollView(showsIndicators: false){
             LazyVStack(spacing: 16) {
-                ForEach(viewModel.vendorData.indices, id: \.self) { index in
-                    let vendor = viewModel.vendorData[index]
+                ForEach(viewModel.vendorData) { vendor in
                     VendorCardWithLocation(vendor: vendor, orderNow: {
                         viewModel.coordinator.vendorDetails(rating: vendor.ratingAvg ?? 0.0, vendorId: "\(vendor.id)")
                     }, openLocation: {
@@ -124,12 +120,20 @@ struct VendorListView: View {
                         }
 
                     })
+                    .onAppear {
+                        viewModel.loadMoreIfNeeded(currentVendor: vendor)
+                    }
                 }
 
+                if viewModel.canLoadMore {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                }
             }
         }
-        .onAppear {
-            print(viewModel.vendorData)
+        .refreshable {
+            viewModel.refresh()
         }
         .padding(.top)
         .padding(.horizontal, 16)
