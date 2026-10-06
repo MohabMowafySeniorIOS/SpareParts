@@ -29,6 +29,16 @@ struct Trader: Codable, Identifiable,Hashable,Equatable {
     let longitude: Double?
     var isFavorite: Bool = false
     let address: String?
+    let brand: categoryModel?
+    let brands: [categoryModel]?
+    let carBrands: [categoryModel]?
+
+    var servedBrands: [categoryModel] {
+        if let brands, !brands.isEmpty { return brands }
+        if let carBrands, !carBrands.isEmpty { return carBrands }
+        if let brand { return [brand] }
+        return []
+    }
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -46,6 +56,9 @@ struct Trader: Codable, Identifiable,Hashable,Equatable {
         case longitude
         case isFavorite = "is_favorite"
         case address
+        case brand
+        case brands
+        case carBrands = "car_brands"
     }
     
     mutating func toggleFavourite(){

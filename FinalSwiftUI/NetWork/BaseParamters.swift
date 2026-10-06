@@ -40,6 +40,8 @@ struct BaseParameters {
     var address_text    : String = ""
     var description     : String = ""
     var problem_type: String            = ""
+    var cancellation_reason_id: String = ""
+    var cancellation_notes: String = ""
     //MARK: AttachMents
     var media_type               = ""
     var id                       = ""
@@ -321,6 +323,14 @@ extension BaseParameters {
         
         if !problem_type.isEmpty {
             parameters["problem_type"] = problem_type
+        }
+
+        if !cancellation_reason_id.isEmpty {
+            parameters["cancellation_reason_id"] = cancellation_reason_id
+        }
+
+        if !cancellation_notes.isEmpty {
+            parameters["cancellation_notes"] = cancellation_notes
         }
         
         if !order_id.isEmpty {

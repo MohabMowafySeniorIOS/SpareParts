@@ -51,6 +51,7 @@ struct RegisterVC: View {
     @State private var naviToOtp: Bool = false
     @State private var checkboxalert: Bool = false
     @State private var textColorChange: Bool = false
+    @State private var showTermsToast: Bool = false
     
     @State var is_country_validation_label: Bool = true
     @State var Validation_country_label: String = "Country Is Required".localized
@@ -89,6 +90,12 @@ struct RegisterVC: View {
                 }.mask(RoundedRectangle(cornerRadius: 0))
             }
             registerButton
+        }
+        .overlay {
+            if showTermsToast {
+                ToastView(message: "agree_terms".localized, backgroundColor: .red)
+                    .padding(.top, 12)
+            }
         }
     }
     
@@ -153,6 +160,12 @@ struct RegisterVC: View {
                 items: viewModel.cityArray,
                 displayText: { $0.name ?? "" }
             )
+            .disabled(viewModel.selectedCcountry == nil)
+            .opacity(viewModel.selectedCcountry == nil ? 0.55 : 1)
+            .onChange(of: viewModel.selectedCcountry) { country in
+                viewModel.selectedCity = nil
+                viewModel.fetchCities(countryId: country?.id)
+            }
             
             CustomePasswordTF(
                 text: $passwordField.input,
@@ -209,7 +222,7 @@ struct RegisterVC: View {
         }else{
             is_country_validation_label = true
         }
-        if !Check(fieldText: viewModel.selectedCity?.name ?? ""){
+        if viewModel.selectedCcountry == nil || !Check(fieldText: viewModel.selectedCity?.name ?? ""){
             is_city_validation_label = false
             x = false
         }else{
@@ -230,6 +243,10 @@ struct RegisterVC: View {
         
         if !termsIsSelected{
             textColorChange = true
+            showTermsToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                showTermsToast = false
+            }
             x = false
         }else{
             textColorChange = false
@@ -276,5 +293,3 @@ func validatePhone(_ field: CustomTFieldState, x: inout Bool) {
         field.isValidationHidden = true
     }
 }
-
-

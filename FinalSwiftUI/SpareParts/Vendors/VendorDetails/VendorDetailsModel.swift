@@ -22,6 +22,16 @@ struct VendorDetailsModel: Codable, Equatable , Hashable {
     let isReceivingOrders: Bool?
     let latitude, longitude: Double?
     let address: String?
+    let brand: categoryModel?
+    let brands: [categoryModel]?
+    let carBrands: [categoryModel]?
+
+    var servedBrands: [categoryModel] {
+        if let brands, !brands.isEmpty { return brands }
+        if let carBrands, !carBrands.isEmpty { return carBrands }
+        if let brand { return [brand] }
+        return []
+    }
     var isFavorite: Bool = false
 
     enum CodingKeys: String, CodingKey {
@@ -33,7 +43,9 @@ struct VendorDetailsModel: Codable, Equatable , Hashable {
         case ratingCount = "rating_count"
         case isReceivingOrders = "is_receiving_orders"
         case latitude, longitude, address
+        case brand
+        case brands
+        case carBrands = "car_brands"
         case isFavorite = "is_favorite"
     }
 }
-

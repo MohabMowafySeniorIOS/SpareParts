@@ -58,6 +58,9 @@ class AddCarViewModel: ObservableObject {
              if Model?.status == "success" {
                 
                 self.getCarCategory = Model?.data ?? []
+                if let id = self.carModel?.category?.id {
+                    self.carCategorySelected = self.getCarCategory.first { $0.id == id }
+                }
              }else {
                  state = .error(err ?? "")
              }
@@ -71,6 +74,9 @@ class AddCarViewModel: ObservableObject {
             guard let self = self else { return }
              if Model?.status == "success" {
                 self.getCarBrand = Model?.data ?? []
+                if let id = self.carModel?.brand?.id {
+                    self.carBrandSelected = self.getCarBrand.first { $0.id == id }
+                }
              }else {
                  state = .error(err ?? "")
              }
@@ -84,6 +90,9 @@ class AddCarViewModel: ObservableObject {
             guard let self = self else { return }
              if Model?.status == "success" {
                 self.getCarModel = Model?.data ?? []
+                if let id = self.carModel?.model?.id {
+                    self.carModelSelected = self.getCarModel.first { $0.id == id }
+                }
              }else {
                  state = .error(err ?? "")
              }
@@ -97,6 +106,9 @@ class AddCarViewModel: ObservableObject {
             guard let self = self else { return }
              if Model?.status == "success" {
                 self.getCarYears = Model?.data ?? []
+                if let year = self.carModel?.year {
+                    self.carYearSelected = "\(year)"
+                }
              }else {
                  state = .error(err ?? "")
              }
@@ -124,4 +136,3 @@ class AddCarViewModel: ObservableObject {
     
     
 }
-

@@ -12,6 +12,7 @@ struct GenericDropdownButton<T: Hashable>: View {
     @Binding var selectedItem: T?
     let items: [T]
     let displayText: (T) -> String
+    let imageUrl: ((T) -> String)?
     @Binding var isExpanded: Bool
 
     var body: some View {
@@ -23,6 +24,10 @@ struct GenericDropdownButton<T: Hashable>: View {
             }
 
             HStack {
+                if let selectedItem, let imageUrl, !imageUrl(selectedItem).isEmpty {
+                    RemoteImageView(imageUrl: imageUrl(selectedItem))
+                        .frame(width: 32, height: 32)
+                }
                 Text(selectedItem == nil ? "" : displayText(selectedItem!))
                     .font(.custom(AppFont.Medium.rawValue, size: 16))
                     .foregroundStyle(Color.CBlack)
@@ -55,6 +60,7 @@ struct GenericDropdownSheet<T: Hashable>: View {
     @Binding var isPresented: Bool
     let items: [T]
     let displayText: (T) -> String
+    let imageUrl: ((T) -> String)?
 
     var body: some View {
         ScrollView {
@@ -65,6 +71,10 @@ struct GenericDropdownSheet<T: Hashable>: View {
                         isPresented = false
                     } label: {
                         HStack {
+                            if let imageUrl, !imageUrl(item).isEmpty {
+                                RemoteImageView(imageUrl: imageUrl(item))
+                                    .frame(width: 40, height: 40)
+                            }
                             Text(displayText(item))
                                 .padding(.horizontal)
 
@@ -111,9 +121,26 @@ struct GenericDropdown<T: Hashable & Identifiable>: View {
     @Binding var selectedItem: T?
     let items: [T]
     let displayText: (T) -> String
+    let imageUrl: ((T) -> String)?
    
 
     @State private var isSheetPresented = false
+
+    init(title: String,
+         is_validation_label: Binding<Bool>,
+         Validation_label: Binding<String>,
+         selectedItem: Binding<T?>,
+         items: [T],
+         displayText: @escaping (T) -> String,
+         imageUrl: ((T) -> String)? = nil) {
+        self.title = title
+        self._is_validation_label = is_validation_label
+        self._Validation_label = Validation_label
+        self._selectedItem = selectedItem
+        self.items = items
+        self.displayText = displayText
+        self.imageUrl = imageUrl
+    }
 
     var body: some View {
         VStack {
@@ -122,6 +149,7 @@ struct GenericDropdown<T: Hashable & Identifiable>: View {
                 selectedItem: $selectedItem,
                 items: items,
                 displayText: displayText,
+                imageUrl: imageUrl,
                 isExpanded: $isSheetPresented
             )
             .onTapGesture { isSheetPresented = true }
@@ -130,7 +158,8 @@ struct GenericDropdown<T: Hashable & Identifiable>: View {
                     selectedItem: $selectedItem,
                     isPresented: $isSheetPresented,
                     items: items,
-                    displayText: displayText
+                    displayText: displayText,
+                    imageUrl: imageUrl
                 )
             }
             

@@ -109,7 +109,13 @@ struct VendorListView: View {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.vendorData) { vendor in
                     VendorCardWithLocation(vendor: vendor, orderNow: {
-                        viewModel.coordinator.vendorDetails(rating: vendor.ratingAvg ?? 0.0, vendorId: "\(vendor.id)")
+                        if isLogin {
+                            viewModel.coordinator.createOrder(mainOrderType: .custom, specificVendor: vendor)
+                        }else {
+                          showLoginPopup = true
+                        }
+
+                     //   viewModel.coordinator.vendorDetails(rating: vendor.ratingAvg ?? 0.0, vendorId: "\(vendor.id)")
                     }, openLocation: {
                         viewModel.openGoogleMaps(lat: vendor.latitude ?? 0.0, lng: vendor.longitude ?? 0.0)
                     }, pressFavourite: {
@@ -122,6 +128,9 @@ struct VendorListView: View {
                     })
                     .onAppear {
                         viewModel.loadMoreIfNeeded(currentVendor: vendor)
+                    }
+                    .onTapGesture {
+                        viewModel.coordinator.vendorDetails(rating: vendor.ratingAvg ?? 0.0, vendorId: "\(vendor.id)")
                     }
                 }
 
@@ -148,4 +157,3 @@ struct VendorListView: View {
         .hidden()
     }
 }
-

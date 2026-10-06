@@ -50,6 +50,7 @@ struct VendorCard: View {
 
                 CustomStarRatingView(rating: vendorsModel?.ratingAvg ?? 0.0, startSize: $startSize, paddingValue: $paddingValue)
             }
+            servedBrandsView
             Button {
                 orderNow()
             } label: {
@@ -72,6 +73,34 @@ struct VendorCard: View {
         .shadow(color: Color.black.opacity(0.08), radius: 10, x: 0, y: 4)
         .padding(1)
         .padding(.trailing,7)
+    }
+
+    @ViewBuilder
+    private var servedBrandsView: some View {
+        if let brands = vendorsModel?.servedBrands, !brands.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("brands_served".localized)
+                    .font(addFont(fontType: .bold, size: 13))
+                    .foregroundStyle(Color.SecondaryColor)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(brands, id: \.id) { brand in
+                            HStack(spacing: 5) {
+                                RemoteImageView(imageUrl: brand.logo?.path ?? "")
+                                    .frame(width: 24, height: 24)
+                                Text(brand.name ?? "")
+                                    .font(addFont(fontType: .Regular, size: 12))
+                                    .foregroundStyle(Color.CGray2)
+                            }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background(Capsule().fill(Color.CGray4))
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 #Preview(body: {
@@ -150,6 +179,30 @@ struct VendorGridCard: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background(Capsule().fill(Color.CGray4))
+            }
+
+            if let brands = vendorsModel?.servedBrands, !brands.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("brands_served".localized)
+                        .font(addFont(fontType: .bold, size: 13))
+                        .foregroundStyle(Color.SecondaryColor)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(brands, id: \.id) { brand in
+                                HStack(spacing: 5) {
+                                    RemoteImageView(imageUrl: brand.logo?.path ?? "")
+                                        .frame(width: 24, height: 24)
+                                    Text(brand.name ?? "")
+                                        .font(addFont(fontType: .Regular, size: 12))
+                                        .foregroundStyle(Color.CGray2)
+                                }
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 5)
+                                .background(Capsule().fill(Color.CGray4))
+                            }
+                        }
+                    }
+                }
             }
 
             // MARK: - Button

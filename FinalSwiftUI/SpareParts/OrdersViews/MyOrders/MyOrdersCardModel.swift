@@ -42,6 +42,13 @@ struct Order: Codable, Identifiable {
 struct OrderType: Codable {
     let value: String?
     let label: String?
+    let orderStatus: String?
+    let statuses: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case value, label, statuses
+        case orderStatus = "order_status"
+    }
 }
 
 struct DeliveryType: Codable {
@@ -59,7 +66,10 @@ struct Vehicle: Codable {
     let id: Int?
     let category: VehicleCategory?
     let brand: Brand?
-    let model: VehicleModel
+    // Some orders can contain a vehicle without a model (for example when
+    // the model was removed or was not selected). Keep decoding the order
+    // details instead of failing the entire response.
+    let model: VehicleModel?
     let year: Int?
     let chassisNumber: String?
     let isDefault: Bool?
@@ -84,6 +94,7 @@ struct VehicleCategory: Codable {
 struct Brand: Codable {
     let id: Int?
     let name: String?
+    let logo: Logo?
 }
 
 struct VehicleModel: Codable {

@@ -67,7 +67,7 @@ struct MyOrdersCardView: View {
 
                 Spacer()
 
-                Text("\("Count".localized): \(ordersData.itemsCount ?? 0)")
+                Text("Items: \(ordersData.itemsCount ?? 0)")
                     .font(addFont(fontType: .bold, size: 14))
                     .foregroundStyle(Color.CBlack)
             }

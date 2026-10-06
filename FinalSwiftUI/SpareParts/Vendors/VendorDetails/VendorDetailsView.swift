@@ -74,6 +74,7 @@ struct VendorDetailsView: View {
         VStack(spacing:0){
             ScrollView{
                 vendorInfoView
+                servedBrandsView
                 imagesView
                 vendorDetailsView
                 countryAndCityView
@@ -120,6 +121,38 @@ struct VendorDetailsView: View {
     private var ratingButton: some View {
         CustomeButtonWithBorderColor(title: "Show Ratings List".localized) {
             goRating = true
+        }
+    }
+
+    @ViewBuilder
+    private var servedBrandsView: some View {
+        if let brands = viewModel.vendorModel?.servedBrands, !brands.isEmpty {
+            VStack(alignment: .leading, spacing: 8) {
+                TitleLabel(title: "brands_served".localized)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(brands, id: \.id) { brand in
+                            HStack(spacing: 5) {
+                                RemoteImageView(imageUrl: brand.logo?.path ?? "")
+                                    .frame(width: 32, height: 32)
+                                Text(brand.name ?? "")
+                                    .font(addFont(fontType: .Regular, size: 13))
+                                    .foregroundStyle(Color.CGray2)
+                            }
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 6)
+                            .background(Capsule().fill(Color.CGray4))
+                        }
+                    }
+                }
+            }
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color.CWhite)
+            )
+            .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 3)
+            .padding(.horizontal)
         }
     }
 
@@ -212,8 +245,14 @@ struct VendorDetailsView: View {
         .padding(.horizontal)
     }
 
-    @ViewBuilder
-    private var distanceView: some View {
+@ViewBuilder
+private var distanceView: some View {
+    Button {
+        viewModel.openGoogleMaps(
+            lat: viewModel.vendorModel?.latitude ?? 0.0,
+            lng: viewModel.vendorModel?.longitude ?? 0.0
+        )
+    } label: {
         HStack(spacing: 6) {
             Image.darkLocation
                 .resizable()
@@ -223,8 +262,15 @@ struct VendorDetailsView: View {
                 .font(addFont(fontType: .bold, size: 14))
                 .foregroundStyle(Color.MainColor)
             Spacer()
+            Image(systemName: "chevron.left")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(Color.MainColor)
         }
+        .contentShape(Rectangle())
     }
+    .buttonStyle(.plain)
+    .frame(maxWidth: .infinity, alignment: .leading)
+}
 
     @ViewBuilder
     private var buttonsView: some View {
@@ -251,7 +297,7 @@ struct VendorDetailsView: View {
     @ViewBuilder
     private var handleNavigation: some View {
         NavigationLink("",
-                       destination:  RatingsView(viewModel: RatingViewModel(traderId: "\(viewModel.vendorModel?.id ?? 0)")), isActive: $goRating)
+                       destination: RatingsView(viewModel: RatingViewModel(traderId: viewModel.vendorId)), isActive: $goRating)
         .navigationBarHidden(true)
         .hidden()
         

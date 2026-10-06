@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import PhotosUI
+import UIKit
 
 
 struct ImagePicker: UIViewControllerRepresentable {
@@ -57,6 +58,47 @@ struct ImagePicker: UIViewControllerRepresentable {
             group.notify(queue: .main) {
                 self.parent.onImagesPicked(uiImages)
             }
+        }
+    }
+}
+
+/// Native camera picker used by the add-piece flow. Keeping it separate from
+/// the photo-library picker lets the user choose either source without losing
+/// the existing multi-select behaviour.
+struct CameraImagePicker: UIViewControllerRepresentable {
+    var onImagePicked: (UIImage) -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.mediaTypes = ["public.image"]
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        let parent: CameraImagePicker
+
+        init(_ parent: CameraImagePicker) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController,
+                                   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+            picker.dismiss(animated: true)
+            if let image = info[.originalImage] as? UIImage {
+                parent.onImagePicked(image)
+            }
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            picker.dismiss(animated: true)
         }
     }
 }

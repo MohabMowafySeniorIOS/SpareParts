@@ -73,6 +73,30 @@ struct VendorCardWithLocation: View {
             .padding(.vertical, 6)
             .background(Capsule().fill(Color.CGray4))
 
+            if !vendor.servedBrands.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("brands_served".localized)
+                        .font(addFont(fontType: .bold, size: 13))
+                        .foregroundStyle(Color.SecondaryColor)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(vendor.servedBrands, id: \.id) { brand in
+                                HStack(spacing: 5) {
+                                    RemoteImageView(imageUrl: brand.logo?.path ?? "")
+                                        .frame(width: 24, height: 24)
+                                    Text(brand.name ?? "")
+                                        .font(addFont(fontType: .Regular, size: 12))
+                                        .foregroundStyle(Color.CGray2)
+                                }
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 5)
+                                .background(Capsule().fill(Color.CGray4))
+                            }
+                        }
+                    }
+                }
+            }
+
             HStack(spacing: 6) {
                 Image.darkLocation
                     .resizable()

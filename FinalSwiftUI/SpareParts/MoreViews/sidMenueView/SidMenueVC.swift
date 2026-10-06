@@ -57,6 +57,9 @@ struct SidMenueVC: View {
             .onDisappear {
                 updateAvatar = false
             }
+            .sheet(isPresented: $showShareSheet) {
+                ActivityView(activityItems: ["https://apps.apple.com/app/\(AppStoreAppId)"])
+            }
             .confirmActionAlert(
                 isPresented: $showLogoutConfirm,
                 title: "logout_confirm_title".localized,
@@ -297,14 +300,9 @@ struct SidMenueVC: View {
             textColor: normaltextinsideSideMenuColor, image: "App evaluation"
         )
         .onTapGesture {
-            if let scene = UIApplication.shared.connectedScenes
-                .first as? UIWindowScene
-            {
-                SKStoreReviewController.requestReview(in: scene)
+            if let url = URL(string: "https://apps.apple.com/app/\(AppStoreAppId)?action=write-review") {
+                UIApplication.shared.open(url)
             }
-            //                                    if let url = URL(string: "https://apps.apple.com/app/idYOUR_APP_ID?action=write-review") {
-            //                                        UIApplication.shared.open(url)
-            //                                    }
         }
     }
     
@@ -348,4 +346,13 @@ struct SidMenueVC: View {
     }
 }
 
+private struct ActivityView: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
+}
 

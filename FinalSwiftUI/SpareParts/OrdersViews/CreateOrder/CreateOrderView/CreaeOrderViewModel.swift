@@ -45,7 +45,10 @@ class CreateOrderViewModel: ObservableObject {
         if parts.count > 0 {
             for item in 0...parts.count - 1 {
                 dict["items[\(item)][part_name]"] = parts[item].name
-                dict["items[\(item)][part_number]"] = parts[item].number
+                let partNumber = parts[item].number.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !partNumber.isEmpty {
+                    dict["items[\(item)][part_number]"] = partNumber
+                }
                 dict["items[\(item)][part_type]"] = parts[item].type
                 dict["items[\(item)][quantity]"] = parts[item].quantity
                 dict["items[\(item)][description]"] = parts[item].describtion
@@ -112,5 +115,4 @@ class CreateOrderViewModel: ObservableObject {
         }
     }
 }
-
 

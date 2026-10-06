@@ -15,6 +15,7 @@ class OrderDetailsViewModel: ObservableObject {
     @Published var bottomSheetType: BottomSheetType = .cancel
     @Published var state: viewState<OrderDetailsModel> = .idle
     @Published var problemTypes = [OrderType]()
+    @Published var cancellationReasons = [CancellationReason]()
     @ObservedObject var coordinator: MainCoordinator
     var orderId: String
     init(coordinator: MainCoordinator, orderId: String) {
@@ -22,6 +23,7 @@ class OrderDetailsViewModel: ObservableObject {
         self.orderId = orderId
         getOrderData(orderId: orderId)
         getProblemTypes()
+        getCancellationReasons()
     }
     
     
@@ -42,16 +44,41 @@ class OrderDetailsViewModel: ObservableObject {
         }
     }
     
-    func getProblemTypes() {
-        let url = "\(hostName)client/problems/types"
-        state = .loading(loading: .progress)
+    func getProblemTypes(orderStatus: String? = nil) {
+        var url = "\(hostName)client/problems/types"
+        if let orderStatus, !orderStatus.isEmpty,
+           let encodedStatus = orderStatus.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            url += "?order_status=\(encodedStatus)"
+        }
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: .get, parameters:nil) { [weak self] (Model: BaseModel<[OrderType]>? , err : String? )in
             guard let self = self else { return }
             if Model != nil {
-                self.state = .loaded(data: self.state.data)
-                self.problemTypes = Model?.data ?? []
+                let reasons = Model?.data ?? []
+                guard let orderStatus, !orderStatus.isEmpty else {
+                    self.problemTypes = reasons
+                    return
+                }
+                self.problemTypes = reasons.filter { reason in
+                    let supportedStatuses = reason.statuses ?? reason.orderStatus.map { [$0] }
+                    guard let supportedStatuses, !supportedStatuses.isEmpty else { return true }
+                    return supportedStatuses.contains { $0.caseInsensitiveCompare(orderStatus) == .orderedSame }
+                }
             } else {
                 self.state = .error(err ?? "")
+            }
+        }
+    }
+
+    func getCancellationReasons() {
+        let url = "\(hostName)client/orders/cancellation-reasons"
+        APIClient.shared.performRequestWithAlamofire(urlString: url, method: .get, parameters: nil) { [weak self] (model: BaseModel<[CancellationReason]>?, err: String?) in
+            guard let self = self else { return }
+            if model?.status == "success" {
+                print(model?.data ?? [])
+                self.cancellationReasons = model?.data ?? []
+            } else if self.cancellationReasons.isEmpty {
+                let message = err ?? model?.message ?? "unknown error"
+                print("Failed to load cancellation reasons: \(message)")
             }
         }
     }
@@ -64,6 +91,7 @@ class OrderDetailsViewModel: ObservableObject {
             guard let self = self else { return }
             if Model != nil {
                 self.state = .loaded(data: Model?.data)
+                self.getProblemTypes(orderStatus: Model?.data?.status?.value)
             } else {
                 self.state = .error(err ?? "")
             }

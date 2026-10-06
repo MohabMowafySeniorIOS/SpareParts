@@ -51,7 +51,8 @@ struct OfferDetailsView: View {
                 }
                 
                 
-                if viewModel.OfferModel?.status?.value != "accepted" {
+                if let status = viewModel.OfferModel?.status?.value,
+                   status != "accepted" && status != "cancelled" && status != "canceled" {
                     
                     SimpleSpareButton(buttonTitle: "Accept Offer".localized, action: {
                         viewModel.acceptOffer(order_id: viewModel.orderId, offer_id: viewModel.offerId, price: viewModel.OfferModel?.totalAmount ?? 0.0)
@@ -68,5 +69,4 @@ struct OfferDetailsView: View {
     
     
 }
-
 

@@ -26,7 +26,7 @@ struct OrderDetailsView: View {
             }
         
             .overlay {
-                GenaricOrderBottomSheet(reasons: viewModel.problemTypes , isPresented: $viewModel.showSheet, orderId: viewModel.orderId, type: viewModel.bottomSheetType)
+                GenaricOrderBottomSheet(reasons: viewModel.problemTypes, cancellationReasons: viewModel.cancellationReasons, isPresented: $viewModel.showSheet, orderId: viewModel.orderId, type: viewModel.bottomSheetType)
             }
         
         
@@ -267,7 +267,7 @@ struct OrderDetailsView: View {
         SimpleSpareButton(
             buttonTitle: "Download bill".localized,
             action: {
-                if let url = URL(string: "\(hostName)general/orders/\(viewModel.orderId)/invoice") {
+                if let url = URL(string: "\(hostName)general/orders/\(viewModel.orderId)/invoice?include=vehicle,items") {
                     UIApplication.shared.open(url)
                 }
             },
@@ -566,14 +566,18 @@ struct CarDetailsSection: View {
         HStack {
             VStack(alignment: .leading, spacing: 14) {
                 InfoRow(icon: "car-1", text: data?.vehicle?.category?.name/*?.name*/ ?? "")
-                InfoRow(icon: "Car type", text: data?.vehicle?.brand?.name/*.name*/ ?? "")
+                HStack(spacing: 8) {
+                    InfoRow(icon: "Car type", text: data?.vehicle?.brand?.name ?? "")
+                    RemoteImageView(imageUrl: data?.vehicle?.brand?.logo?.path ?? "")
+                        .frame(width: 32, height: 32)
+                }
                 InfoRow(icon: "Car model", text: data?.vehicle?.chassisNumber ?? "")
             }
             
             Spacer()
             
             VStack(alignment: .leading, spacing: 14) {
-                InfoRow(icon: "cars", text: data?.vehicle?.model.name/*?.name*/ ?? "")
+                InfoRow(icon: "cars", text: data?.vehicle?.model?.name ?? "")
                 InfoRow(icon: "date", text: String(data?.vehicle?.year ?? 2020))
             }
         }
@@ -599,7 +603,7 @@ struct OrderedPartsSection: View {
                         name: item.partName ?? "",
                         number: item.partNumber ?? "",
                         count: String(item.quantity ?? 0),
-                        type: item.partType?.label ?? "",
+                        type: localizedPartType(item.partType),
                         notes: item.description ?? ""
                     ),
                     id: item.id ?? 0
@@ -613,6 +617,17 @@ struct OrderedPartsSection: View {
             }
         }
         .padding(.horizontal)
+    }
+
+    private func localizedPartType(_ type: DeliveryTypeClass?) -> String {
+        let rawValue = type?.value ?? type?.label ?? ""
+        switch rawValue.lowercased() {
+        case "new_original": return "new (original)".localized
+        case "new_agency": return "new (wekala)".localized
+        case "used_local": return "used (local)".localized
+        case "used_import": return "used (foreign)".localized
+        default: return type?.label?.localized ?? ""
+        }
     }
 }
 

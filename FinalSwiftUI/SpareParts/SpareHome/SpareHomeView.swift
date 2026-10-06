@@ -133,7 +133,11 @@ struct SpareHomeView: View {
                     ForEach(viewModel.tradersArr, id: \.id) { item in
                         VendorCard(vendorsModel: item, orderNow: {
                             
-                            viewModel.coordinator.vendorDetails(rating: item.ratingAvg ?? 0.0, vendorId: "\(item.id)")
+                            if isLogin {
+                                viewModel.coordinator.createOrder(mainOrderType: .custom, specificVendor: item)
+                            }else {
+                              showLoginPopup = true
+                            }
                             
                         }, favouriteAction: {
                             if isLogin {

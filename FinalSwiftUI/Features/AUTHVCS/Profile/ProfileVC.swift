@@ -218,6 +218,10 @@ struct ProfileVC: View {
                 displayText: { $0.name ?? ""
                 }
             )
+            .onChange(of: viewModel.selectedCcountry) { country in
+                viewModel.selectedCity = nil
+                viewModel.fetchCities(countryId: country?.id)
+            }
             
             GenericDropdown(
                 title: "city".localized,
@@ -226,6 +230,8 @@ struct ProfileVC: View {
                 items: viewModel.cityArray,
                 displayText: { $0.name ?? "" }
             )
+            .disabled(viewModel.selectedCcountry == nil)
+            .opacity(viewModel.selectedCcountry == nil ? 0.55 : 1)
             
             
         }

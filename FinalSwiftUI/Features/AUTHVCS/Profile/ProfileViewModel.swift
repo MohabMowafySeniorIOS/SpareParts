@@ -66,21 +66,20 @@ class ProfileViewModel: ObservableObject {
                  AuthService.userData?.phone = userModel?.phone
                  AuthService.userData?.avatar = userModel?.avatar
                 
-                 cityArray.map { item in
-                     if item.id == self.userModel?.city_id {
-                         self.selectedCity = item
-                     }
-                 }
-                 
-                 countryArray.map { item in
-                     if item.id == self.userModel?.country_id {
-                         self.selectedCcountry = item
-                     }
-                 }
+                 self.applyProfileSelections()
                  state = .loaded(data: Model?.data)
             }else {
                 state = .error(err ?? "")
             }
+        }
+    }
+
+    private func applyProfileSelections() {
+        if let cityId = userModel?.city_id {
+            selectedCity = cityArray.first { $0.id == cityId }
+        }
+        if let countryId = userModel?.country_id {
+            selectedCcountry = countryArray.first { $0.id == countryId }
         }
     }
     
@@ -129,19 +128,24 @@ class ProfileViewModel: ObservableObject {
             guard let self = self else { return }
              if Model?.status == "success" {
                 self.countryArray = Model?.data ?? []
+                self.applyProfileSelections()
              }else {
                  state = .error(err ?? "")
              }
         }
     }
     
-    func fetchCities(urlEndPoint:EndPoints = .cities, methodType: HTTPMethodType = .get) {
-        let url = "\(hostName)\(urlEndPoint.rawValue)"
+    func fetchCities(countryId: Int? = nil, urlEndPoint:EndPoints = .cities, methodType: HTTPMethodType = .get) {
+        var url = "\(hostName)\(urlEndPoint.rawValue)"
+        if let countryId {
+            url += "?country_id=\(countryId)"
+        }
         
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<[CityData]>? , err : String? )in
             guard let self = self else { return }
              if Model?.status == "success" {
                 self.cityArray = Model?.data ?? []
+                self.applyProfileSelections()
              }else {
                  state = .error(err ?? "")
              }
@@ -150,5 +154,3 @@ class ProfileViewModel: ObservableObject {
     
    
 }
-
-

@@ -75,6 +75,11 @@ struct OTPView: View {
                     }
                     
                 }
+                .onChange(of: viewModel.errorMessage) { message in
+                    if let message, !message.isEmpty {
+                        startTimer()
+                    }
+                }
                 
            
     }
@@ -212,6 +217,7 @@ struct OTPView: View {
     }
     
     func handleResponse(){
+        guard code.count == slotCount else { return }
         if isForgetPass {
             viewModel.ShowChangePassword(otp: code, phone: phone)
         }else {
@@ -220,6 +226,7 @@ struct OTPView: View {
     }
     
     private func startTimer() {
+        timer?.invalidate()
         timerSeconds = 30
         isResendButtonEnabled = false
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
@@ -228,6 +235,7 @@ struct OTPView: View {
             } else {
                 isResendButtonEnabled = true
                 timer?.invalidate()
+                timer = nil
             }
         }
     }
@@ -253,4 +261,3 @@ struct OTPView: View {
         )
     }
 }
-

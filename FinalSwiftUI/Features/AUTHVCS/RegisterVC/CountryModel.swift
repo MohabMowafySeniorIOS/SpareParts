@@ -25,10 +25,12 @@ struct CountryData: Codable , Identifiable, Hashable {
 struct CityData: Codable, Identifiable, Hashable {
     let id: Int?
     let name: String?
+    let country_id: Int?
     var isSelected: Bool = false
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"
+        case country_id = "country_id"
       
     }
     

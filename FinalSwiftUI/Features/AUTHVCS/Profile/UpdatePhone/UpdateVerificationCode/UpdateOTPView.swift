@@ -73,6 +73,11 @@ struct UpdateOTPView: View {
                     }
                     
                 }
+                .onChange(of: viewModel.errorMessage) { message in
+                    if let message, !message.isEmpty {
+                        startTimer()
+                    }
+                }
                 
            
     }
@@ -209,6 +214,7 @@ struct UpdateOTPView: View {
     }
     
     private func startTimer() {
+        timer?.invalidate()
         timerSeconds = 30
         isResendButtonEnabled = false
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
@@ -217,6 +223,7 @@ struct UpdateOTPView: View {
             } else {
                 isResendButtonEnabled = true
                 timer?.invalidate()
+                timer = nil
             }
         }
     }
@@ -233,4 +240,3 @@ struct UpdateOTPView: View {
        
     }
 }
-

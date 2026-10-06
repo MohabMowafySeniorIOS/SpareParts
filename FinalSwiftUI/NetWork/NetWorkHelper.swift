@@ -67,7 +67,7 @@ public enum EndPoints: String {
     
     //MARK: Car Properties
     case categories = "client/cars/categories"
-    case brands = "client/cars/brands"
+    case brands = "general/brands"
     case Models = "client/cars/models"
     case years = "client/cars/years"
     //MARK: General

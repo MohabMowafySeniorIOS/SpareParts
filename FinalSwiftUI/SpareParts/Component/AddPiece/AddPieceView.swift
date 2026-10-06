@@ -23,6 +23,10 @@ struct AddPieceView: View {
     @State private var pieceCountFieldText: String = ""
     @State private var isPieceCountFieldValid: Bool = true
     @State private var showImagePicker: Bool = false
+    @State private var showCameraPicker: Bool = false
+    @State private var showImageSourceMenu: Bool = false
+    @State private var toastMessage: String = ""
+    @State private var showToast: Bool = false
     @State private var isImagePickerValid: Bool = true
     @State private var requiredPieceType: RequiredPieceType = .original
     @State private var requiredPieceTypeText: String = "new (original)".localized
@@ -111,6 +115,28 @@ struct AddPieceView: View {
                 }
             },selectionLimit: 4-viewModel.pickedImages.count)
         }
+        .fullScreenCover(isPresented: $showCameraPicker) {
+            CameraImagePicker { image in
+                let sessionID = uploadSessionID
+                Task {
+                    await uploadAllImages(images: [image], sessionID: sessionID)
+                }
+            }
+            .ignoresSafeArea()
+        }
+        .confirmationDialog("Add photo".localized, isPresented: $showImageSourceMenu) {
+            Button("Choose from library".localized) { showImagePicker = true }
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Button("Take a photo".localized) { showCameraPicker = true }
+            }
+            Button("Cancel".localized, role: .cancel) {}
+        }
+        .overlay {
+            if showToast {
+                ToastView(message: toastMessage, backgroundColor: .red)
+                    .padding(.top, 12)
+            }
+        }
     }
     
     func uploadAllImages(images: [UIImage], sessionID: UUID) async {
@@ -157,6 +183,12 @@ struct AddPieceView: View {
                 text: $pieceNumFieldText,
                 is_validation_label: $isPieceNumFieldValid,
                 is_title_label: true, fieldtype: .constant(.PieceNum))
+            HStack {
+                Text("piece_number_hint".localized)
+                    .font(addFont(fontType: .Regular, size: 12))
+                    .foregroundStyle(Color.CGray1)
+                Spacer()
+            }
 
             SpareTextFieldWithLabel(
                 text: $pieceCountFieldText,
@@ -209,7 +241,7 @@ struct AddPieceView: View {
                 .foregroundStyle(Color.MainColor)
                 .onTapGesture {
                     if viewModel.pickedImages.count < 4 {
-                        showImagePicker = true
+                        showImageSourceMenu = true
                     }
                 }
         }
@@ -275,10 +307,18 @@ struct AddPieceView: View {
     func isValid() -> Bool {
         var x: Bool = true
         FieldChecker(text: pieceNameFieldText, chVar: &x, labelHidden: &isPieceNameFieldValid)
-        FieldChecker(text: pieceNumFieldText, chVar: &x, labelHidden: &isPieceNumFieldValid)
+        isPieceNumFieldValid = true
         FieldCheckerGreaterThanZero(text: pieceCountFieldText, chVar: &x, labelHidden: &isPieceCountFieldValid)
         
         FieldChecker(text: descriptionText, chVar: &x, labelHidden: &isDescribtionFieldValid)
+
+        if descriptionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            toastMessage = "Please Insert Describtion".localized
+            showToast = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                showToast = false
+            }
+        }
         
         if viewModel.pickedImages.count == 0 {
             x = false

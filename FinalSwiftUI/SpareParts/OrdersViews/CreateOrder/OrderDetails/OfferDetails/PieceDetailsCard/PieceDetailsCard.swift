@@ -24,7 +24,7 @@ struct PieceDetailsCard: View {
 //                    .foregroundStyle(.main)
 //                    .font(addFont(fontType: .Medium, size: 18))
                 
-                Text("Count".localized)
+                Text("Items")
                     .foregroundStyle(Color.MainColor)
                     .font(addFont(fontType: .Medium, size: 18))
                 

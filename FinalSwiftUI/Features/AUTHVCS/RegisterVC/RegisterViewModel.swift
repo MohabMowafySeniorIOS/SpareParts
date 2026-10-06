@@ -49,8 +49,11 @@ final class RegisterViewModel: ObservableObject {
         }
     }
     
-    func fetchCities(urlEndPoint:EndPoints = .cities, methodType: HTTPMethodType = .get) {
-        let url = "\(hostName)\(urlEndPoint.rawValue)"
+    func fetchCities(countryId: Int? = nil, urlEndPoint:EndPoints = .cities, methodType: HTTPMethodType = .get) {
+        var url = "\(hostName)\(urlEndPoint.rawValue)"
+        if let countryId {
+            url += "?country_id=\(countryId)"
+        }
         
         APIClient.shared.performRequestWithAlamofire(urlString: url, method: methodType, parameters: nil) { [weak self] (Model: BaseModel<[CityData]>? , err : String? )in
             guard let self = self else { return }
@@ -78,4 +81,3 @@ final class RegisterViewModel: ObservableObject {
         }
     }
 }
-
