@@ -246,7 +246,15 @@ struct AddPieceView: View {
                 }
         }
 
-        ImagePickerAndSlider(pickedImages: $viewModel.pickedImages,is_validation_label: $isImagePickerValid)
+        ImagePickerAndSlider(
+            pickedImages: $viewModel.pickedImages,
+            is_validation_label: $isImagePickerValid,
+            onAddImage: {
+                if viewModel.pickedImages.count < 4 {
+                    showImageSourceMenu = true
+                }
+            }
+        )
     }
     
     @ViewBuilder

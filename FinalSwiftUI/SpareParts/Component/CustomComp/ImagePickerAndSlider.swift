@@ -10,6 +10,7 @@ struct ImagePickerAndSlider: View {
     @Binding var pickedImages: [AttachMentModel?]
     @Binding var is_validation_label: Bool
     var Validation_label: String = "Please Choose Images".localized
+    var onAddImage: (() -> Void)? = nil
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             VStack {
@@ -22,6 +23,10 @@ struct ImagePickerAndSlider: View {
                                         .frame(width: 100, height: 100)
                                         .clipped()
                                         .cornerRadius(14)
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            onAddImage?()
+                                        }
                                         
                                     
                                         HStack {
@@ -40,12 +45,17 @@ struct ImagePickerAndSlider: View {
                                
                             }
                         } else {
-                            Image(systemName: "photo")
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .foregroundColor(Color.CGray1)
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(8)
+                            Button {
+                                onAddImage?()
+                            } label: {
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                    .foregroundColor(Color.CGray1)
+                                    .background(Color.gray.opacity(0.1))
+                                    .cornerRadius(8)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import IQKeyboardManagerSwift
 
 import SwiftUI
 
@@ -21,15 +22,19 @@ struct chatView: View {
     
     var body: some View {
         
+        
         ShowViewState(state: viewModel.state) { Model in
          
                 VStack(spacing: 0) {
-
-                    headerView
-
                     scrollView
+                        .frame(maxHeight: .infinity)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .background(Color(.systemGroupedBackground))
+                .safeAreaInset(edge: .top, spacing: 0) {
+                    headerView
+                        .zIndex(1)
+                }
                 
                 .safeAreaInset(edge: .bottom) {
                     inputBar
@@ -37,7 +42,11 @@ struct chatView: View {
                 }
 
                 .onDisappear {
+                    IQKeyboardManager.shared.isEnabled = true
                     viewModel.leaveChat()
+            }
+            .onAppear {
+                IQKeyboardManager.shared.isEnabled = false
             }
         }
 
