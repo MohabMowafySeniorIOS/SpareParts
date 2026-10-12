@@ -535,6 +535,7 @@
 "added_cars_menu"                        = "قائمة السيارات المضاف";
 "show_vendors_menu"                      = "عرض قائمة التجار";
 "added_parts_menu"                       = "قائمة القطع المضافة";
+"Piece Count"                            = "عدد القطع";
 
 "local_order"                            = "طلب عام محلي";
 "national_order"                         = "طلب دولي";
@@ -554,6 +555,7 @@
 "used (local)"                           = "مستعملة ( استعمال محلي )";
 "user (foreign)"                         = "مستعملة ( استيراد من الخارج )";
 "add_piece_images"                       = "إرفاق صور القطعة";
+"piece_images_hint"                      = "يفضل إضافة صور للقطعة لمساعدتنا في تحديد القطعة الصحيحة";
 "add_text_description"                   = "إضافة وصف نصي";
 "Piece Name"                             = "اسم القطعة";
 "Please enter a valid piece name."       = "من فضلك ادخل اسم القطعه صحيح";

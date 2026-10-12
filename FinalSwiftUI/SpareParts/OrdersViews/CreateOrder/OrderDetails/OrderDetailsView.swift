@@ -112,7 +112,18 @@ struct OrderDetailsView: View {
                 HStack {
                     OffersSection(data: data) { offer in
                         viewModel.coordinator.showOfferDetails(offerId: "\(offer.id ?? 0)", orderId: "\(data.id ?? 0)", OfferModel: offer )
+                    } chatAction: { data in
+//                        if data.hasChat == true {
+//                            viewModel.coordinator.showChatView(roomId: "\(data.chatID ?? 0)", title: "\(data.trader?.tradeName ?? "")-\(data.orderNumber ?? "")")
+//                        }else {
+                            var param = BaseParameters()
+                            param.order_id = "\(viewModel.orderId)"
+                            param.trader_id = "\(data.trader?.id ?? 0)"
+                            viewModel.createChat(param: param)
+                       // }
                     }
+
+
                     Spacer()
                 }
                 
@@ -606,12 +617,25 @@ struct OrderedPartsSection: View {
                         type: localizedPartType(item.partType),
                         notes: item.description ?? ""
                     ),
-                    id: item.id ?? 0
+                    id: item.id ?? 0,
+                    hasImages: item.images?.contains {
+                        guard let path = $0.path?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+                            return false
+                        }
+                        return !path.isEmpty
+                    } ?? false
                 ) {
                     print("show pictures tapped for item: \(item.id ?? 0)")
                     // IMPORTANT: Keep the images scoped to the tapped item only.
                     // Do not flatten images from all order items.
-                    selectedImages = item.images ?? []
+                    let images = item.images?.filter {
+                        guard let path = $0.path?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+                            return false
+                        }
+                        return !path.isEmpty
+                    } ?? []
+                    guard !images.isEmpty else { return }
+                    selectedImages = images
                     showImages = true
                 }
             }
@@ -634,6 +658,7 @@ struct OrderedPartsSection: View {
 struct OffersSection: View {
     let data: OrderDetailsModel?
     var offerAction: ((Offer) -> Void)?
+    var chatAction: ((Offer) -> Void)?
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
@@ -642,6 +667,7 @@ struct OffersSection: View {
                         OffersCardView(canMessage: data?.hasChat ?? false ,part: OffersCardModel(name: offer.trader?.tradeName ?? "", country: "saudia", city: "ryiadh", price: String(offer.totalAmount ?? 0)), buttonTitle: "show offer details".localized) {
                             offerAction?(offer)
                         } onMessage: {
+                            chatAction?(offer)
                             print("Message tapped...")
                         }
                     }

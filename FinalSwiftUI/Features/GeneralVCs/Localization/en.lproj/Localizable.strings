@@ -333,6 +333,7 @@
 "authority_number"                         = "Authority Number";
 "Please Insert Authority Number"           = "Please Insert Authority Number";
 "piece_number_hint"                        = "Adding the piece number is preferred";
+"piece_images_hint"                        = "Adding photos of the part is recommended to help identify the correct part";
 "brands_served"                             = "Brands served";
 "Choose from library"                       = "Choose from library";
 "Take a photo"                             = "Take a photo";

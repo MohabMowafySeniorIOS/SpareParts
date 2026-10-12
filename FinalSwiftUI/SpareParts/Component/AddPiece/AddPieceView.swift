@@ -246,6 +246,13 @@ struct AddPieceView: View {
                 }
         }
 
+        HStack {
+            Text("piece_images_hint".localized)
+                .font(addFont(fontType: .Regular, size: 12))
+                .foregroundStyle(Color.CGray1)
+            Spacer()
+        }
+
         ImagePickerAndSlider(
             pickedImages: $viewModel.pickedImages,
             is_validation_label: $isImagePickerValid,
@@ -328,12 +335,7 @@ struct AddPieceView: View {
             }
         }
         
-        if viewModel.pickedImages.count == 0 {
-            x = false
-            isImagePickerValid = false
-        }else {
-            isImagePickerValid = true
-        }
+        isImagePickerValid = true
       
        
         return x

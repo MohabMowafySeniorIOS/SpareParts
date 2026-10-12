@@ -58,7 +58,9 @@ struct NotificationsView: View {
         }else if type == "payment_received" {
             viewModel.coordinator.showWallet()
         }
-        
+        else {
+            viewModel.coordinator.showOrderDetails(orderId: notifyId ?? "")
+        }
     }
 }
 

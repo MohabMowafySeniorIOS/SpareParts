@@ -24,7 +24,7 @@ struct PieceDetailsCard: View {
 //                    .foregroundStyle(.main)
 //                    .font(addFont(fontType: .Medium, size: 18))
                 
-                Text("Items")
+                Text("Piece Count".localized)
                     .foregroundStyle(Color.MainColor)
                     .font(addFont(fontType: .Medium, size: 18))
                 
@@ -45,7 +45,7 @@ struct PieceDetailsCard: View {
                // Text(offer.orderItem. ?? 0)
                 //    .foregroundStyle(Color.CGray1)
                 
-                Text("\(offer.orderItem?.quantity ?? 0)")
+                Text("\(offer.orderItem?.quantity ?? 0)".toEnglishDigits())
                     .foregroundStyle(Color.CGray1)
                 
                 Text(firstNonZeroDecimal(offer.price ?? 0.0))

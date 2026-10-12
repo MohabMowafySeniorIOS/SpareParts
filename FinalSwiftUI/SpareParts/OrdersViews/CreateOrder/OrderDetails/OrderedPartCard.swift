@@ -10,6 +10,7 @@ import SwiftUI
 struct OrderedPartCard: View {
     let part: Part
     let id: Int
+    let hasImages: Bool
     var onPictureTap: () -> Void
 
     var body: some View {
@@ -42,20 +43,22 @@ struct OrderedPartCard: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            Divider()
+            if hasImages {
+                Divider()
 
-            Button {
-                onPictureTap()
-            } label: {
-                Text("show pictures".localized)
-                    .font(addFont(fontType: .bold, size: 15))
-                    .foregroundStyle(Color.CWhite)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 46)
-                    .background(
-                        Color.MainColor
-                            .cornerRadius(20)
-                    )
+                Button {
+                    onPictureTap()
+                } label: {
+                    Text("show pictures".localized)
+                        .font(addFont(fontType: .bold, size: 15))
+                        .foregroundStyle(Color.CWhite)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 46)
+                        .background(
+                            Color.MainColor
+                                .cornerRadius(20)
+                        )
+                }
             }
         }
         .padding(16)
