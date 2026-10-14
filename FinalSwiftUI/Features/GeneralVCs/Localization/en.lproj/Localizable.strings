@@ -270,6 +270,7 @@
 "money_amount"                          = "Money Amount";
 "wallet"                                = "Wallet";
 "orders"                                = "Orders";
+"items_count_format"                   = "Items: %d";
 "accept_terms_and_conditions"           = "Accept Terms And Conditions";
 "price"                                 = "Price";
 "details"                               = "Details";

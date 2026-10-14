@@ -354,6 +354,7 @@
 "money_amount"                           = "قيمة المبلغ";
 "wallet"                                 = "المحفظة";
 "orders"                                 = "سجل الطلبات";
+"items_count_format"                    = "عدد القطع: %d";
 "accept_terms_and_conditions"            = "الموافقة علي الشروط و الاحكام";
 "price"                                  = "السعر";
 "details"                                = "التفاصيل";
